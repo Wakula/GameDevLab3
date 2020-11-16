@@ -20,7 +20,3 @@ class GameObject:
             return
 
         self.move(*self.speed)
-
-
-
-

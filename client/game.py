@@ -27,8 +27,9 @@ class Game:
             settings.PLAYER_RADIUS,
             settings.PLAYER_COLOR,
             settings.PLAYER_SPEED,
+            self.objects,
         )
-        for key in player.KEYS_TO_DIRECTIONS.keys():
+        for key in player.ALL_KEYS:
             self.key_down_handlers[key].append(player.handle_down)
             self.key_up_handlers[key].append(player.handle_up)
 
