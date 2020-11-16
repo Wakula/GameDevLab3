@@ -1,6 +1,6 @@
 from collections import defaultdict
 from model.constants import Directions
-from model.player import Player
+from model.player import ClientPlayer, Opponent
 import pygame
 import settings
 
@@ -15,13 +15,14 @@ class Game:
         self.key_down_handlers = defaultdict(list)
         self.key_up_handlers = defaultdict(list)
         # TODO: this should be changed for multiple players
-        self._init_player()
+        self._init_client_player()
+        self._init_opponents()
 
-    def _init_player(self):
+    def _init_client_player(self):
         # TODO: x_... and y_... spawn position should be reworked
         x_spawn_position = int((settings.SCREEN_WIDTH - settings.PLAYER_RADIUS) / 2)
         y_spawn_position = settings.SCREEN_HEIGHT - settings.PLAYER_RADIUS * 2
-        player = Player(
+        player = ClientPlayer(
             x_spawn_position,
             y_spawn_position,
             settings.PLAYER_RADIUS,
@@ -34,6 +35,19 @@ class Game:
             self.key_up_handlers[key].append(player.handle_up)
 
         self.objects.append(player)
+
+    def _init_opponents(self):
+        x_spawn_position = int((settings.SCREEN_WIDTH - settings.PLAYER_RADIUS) / 2)
+        y_spawn_position = settings.SCREEN_HEIGHT - settings.PLAYER_RADIUS * 2
+        opponent = Opponent(
+            x_spawn_position,
+            y_spawn_position,
+            settings.PLAYER_RADIUS,
+            settings.OPPONENT_COLOR,
+            settings.PLAYER_SPEED,
+            self.objects,
+        )
+        self.objects.append(opponent)
 
     def update(self):
         for game_object in self.objects:
