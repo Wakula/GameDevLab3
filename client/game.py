@@ -29,8 +29,8 @@ class Game:
             settings.PLAYER_SPEED,
         )
         for key in player.KEYS_TO_DIRECTIONS.keys():
-            self.key_down_handlers[key].append(player.handle)
-            self.key_up_handlers[key].append(player.handle)
+            self.key_down_handlers[key].append(player.handle_down)
+            self.key_up_handlers[key].append(player.handle_up)
 
         self.objects.append(player)
 

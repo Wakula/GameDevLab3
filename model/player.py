@@ -18,15 +18,30 @@ class Player(GameObject):
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
         self.color = color
         self.direction = Directions.UP
-        self.is_moving = False
+        self.move_stack = []
 
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.bounds.center, self.radius)
 
-    def handle(self, key):
-        self.is_moving = not self.is_moving
-        if key in self.KEYS_TO_DIRECTIONS.keys() and self.is_moving:
-            self.direction = self.KEYS_TO_DIRECTIONS[key] 
+    def handle_up(self, key):
+        if key in self.KEYS_TO_DIRECTIONS.keys():
+            direction = self.KEYS_TO_DIRECTIONS[key]
+            if direction in self.move_stack:
+                self.move_stack.remove(direction)
+            
+            if self.move_stack:
+                self.direction = self.move_stack[-1]
+
+    def handle_down(self, key):
+        if key in self.KEYS_TO_DIRECTIONS.keys():
+            direction = self.KEYS_TO_DIRECTIONS[key]
+            if direction in self.move_stack:
+                self.move_stack.remove(direction)
+            self.move_stack.append(direction)
+            self.direction = direction
+
+    def is_moving(self):
+        return len(self.move_stack) != 0
 
     def update(self):
         if self.direction == Directions.LEFT:
@@ -44,7 +59,7 @@ class Player(GameObject):
         else:
             return
 
-        if not self.is_moving:
+        if not self.is_moving():
             return
 
         self.move(dx, dy)
