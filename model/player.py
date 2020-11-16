@@ -53,7 +53,9 @@ class AbstractPlayer(GameObject):
         h_x -= self.radius
         h_y -= (self.radius + 2 * settings.HP_HEIGHT)
         h_w = (self.health / settings.MAX_HEALTH) * 2 * self.radius
-        pygame.draw.rect(surface, settings.DIRECTION_COLOR, (h_x, h_y, h_w, settings.HP_HEIGHT))
+        pygame.draw.rect(surface, settings.HP_COLOR, (h_x, h_y, h_w, settings.HP_HEIGHT))
+        dh_w = (1 - self.health / settings.MAX_HEALTH) * 2 * self.radius
+        pygame.draw.rect(surface, settings.HP_DAMAGED_COLOR, (h_x + h_w, h_y, dh_w, settings.HP_HEIGHT))
 
 
     def is_moving(self):
