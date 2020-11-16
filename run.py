@@ -1,3 +1,3 @@
-from client.game import Game
+from model.game import Game
 
 Game().run()
