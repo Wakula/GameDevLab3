@@ -4,3 +4,4 @@ test
 ```
 python run.py
 ```
+Controls - WASD
