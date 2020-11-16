@@ -17,7 +17,7 @@ class AbstractPlayer(GameObject):
         pygame.K_a, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_SPACE,
     )
 
-    def __init__(self, x, y, radius, color, offset, game_objects):
+    def __init__(self, x, y, radius, color, offset, projectiles):
         self.offset = offset
         self.radius = radius
         self.diameter = 2 * radius
@@ -26,7 +26,7 @@ class AbstractPlayer(GameObject):
         self.direction = Directions.UP
         self.move_stack = []
         self.projectile_speed = settings.PROJECTILE_SPEED
-        self.game_objects = game_objects
+        self.projectiles = projectiles
         self.previous_shooting_time = None
         self.health = settings.MAX_HEALTH
 
@@ -57,7 +57,6 @@ class AbstractPlayer(GameObject):
         dh_w = (1 - self.health / settings.MAX_HEALTH) * 2 * self.radius
         pygame.draw.rect(surface, settings.HP_DAMAGED_COLOR, (h_x + h_w, h_y, dh_w, settings.HP_HEIGHT))
 
-
     def is_moving(self):
         return len(self.move_stack) != 0
 
@@ -69,9 +68,10 @@ class AbstractPlayer(GameObject):
             *self.bounds.center,
             settings.PROJECTILE_RADIUS, settings.PROJECTILE_COLOR,
             settings.PROJECTILE_SPEED,
-            self.direction,
+            self,
+            settings.PROJECTILE_BASE_DAMAGE
         )
-        self.game_objects.append(projectile)
+        self.projectiles.append(projectile)
 
     def update(self):
         if self.direction == Directions.LEFT:
