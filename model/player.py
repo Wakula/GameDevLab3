@@ -1,4 +1,4 @@
-from model.constants import Directions
+from model.constants import Directions, DIRECTIONS_TO_DELTA
 from model.game_object import GameObject
 from model.projectile import Projectile
 import random
@@ -28,6 +28,7 @@ class AbstractPlayer(GameObject):
         self.projectile_speed = settings.PROJECTILE_SPEED
         self.game_objects = game_objects
         self.previous_shooting_time = None
+        self.health = settings.MAX_HEALTH
 
     def handle_up(self, key):
         raise NotImplementedError
@@ -37,6 +38,23 @@ class AbstractPlayer(GameObject):
 
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.bounds.center, self.radius)
+        self.draw_direction(surface)
+        self.draw_hp(surface)
+    
+    def draw_direction(self, surface):
+        delta = DIRECTIONS_TO_DELTA[self.direction]
+        (c_x, c_y) = self.bounds.center
+        c_x += (1 - settings.DIRECTION_RATIO) * self.radius * delta[0]
+        c_y += (1 - settings.DIRECTION_RATIO) * self.radius * delta[1]
+        pygame.draw.circle(surface, settings.DIRECTION_COLOR, (c_x, c_y), self.radius * settings.DIRECTION_RATIO)
+    
+    def draw_hp(self, surface):
+        (h_x, h_y) = self.bounds.center
+        h_x -= self.radius
+        h_y -= (self.radius + 2 * settings.HP_HEIGHT)
+        h_w = (self.health / settings.MAX_HEALTH) * 2 * self.radius
+        pygame.draw.rect(surface, settings.DIRECTION_COLOR, (h_x, h_y, h_w, settings.HP_HEIGHT))
+
 
     def is_moving(self):
         return len(self.move_stack) != 0
