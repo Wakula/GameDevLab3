@@ -1,4 +1,5 @@
 from collections import defaultdict
+from model.constants import Directions
 import pygame
 import settings
 
@@ -22,53 +23,49 @@ class GameObject:
 
 
 class Player(GameObject):
-    PLAYER_KEYS = (
-        pygame.K_a,
-        pygame.K_w,
-        pygame.K_d,
-        pygame.K_s,
-    )
+    KEYS_TO_DIRECTIONS = {
+        pygame.K_a: Directions.LEFT,
+        pygame.K_w: Directions.UP,
+        pygame.K_d: Directions.RIGHT,
+        pygame.K_s: Directions.DOWN
+    }
 
     def __init__(self, x, y, radius, color, offset):
         self.offset = offset
         self.radius = radius
         self.diameter = 2 * radius
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
-        # TODO: should also display direction
         self.color = color
-        self.moving_left = False
-        self.moving_up = False
-        self.moving_right = False
-        self.moving_down = False
+        self.direction = Directions.UP
+        self.is_moving = False
 
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.bounds.center, self.radius)
 
     def handle(self, key):
-        if key == pygame.K_a:
-            self.moving_left = not self.moving_left
-        elif key == pygame.K_w:
-            self.moving_up = not self.moving_up
-        elif key == pygame.K_s:
-            self.moving_down = not self.moving_down
-        elif key == pygame.K_d:
-            self.moving_right = not self.moving_right
+        self.is_moving = not self.is_moving
+        if key in self.KEYS_TO_DIRECTIONS.keys() and self.is_moving:
+            self.direction = self.KEYS_TO_DIRECTIONS[key] 
 
     def update(self):
-        if self.moving_left:
+        if self.direction == Directions.LEFT:
             dx = -(min(self.offset, self.bounds.left))
             dy = 0
-        elif self.moving_right:
+        elif self.direction == Directions.RIGHT:
             dx = min(self.offset, settings.SCREEN_WIDTH - self.bounds.right)
             dy = 0
-        elif self.moving_up:
+        elif self.direction == Directions.UP:
             dx = 0
             dy = -min(self.offset, self.bounds.top)
-        elif self.moving_down:
+        elif self.direction == Directions.DOWN:
             dx = 0
             dy = (min(self.offset, settings.SCREEN_HEIGHT - self.bounds.bottom))
         else:
             return
+
+        if not self.is_moving:
+            return
+
         self.move(dx, dy)
 
 
@@ -95,7 +92,7 @@ class Game:
             settings.PLAYER_COLOR,
             settings.PLAYER_SPEED,
         )
-        for key in player.PLAYER_KEYS:
+        for key in player.KEYS_TO_DIRECTIONS.keys():
             self.key_down_handlers[key].append(player.handle)
             self.key_up_handlers[key].append(player.handle)
 
@@ -111,6 +108,10 @@ class Game:
 
     def handle_events(self):
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+                
             if event.type == pygame.KEYDOWN:
                 for handler in self.key_down_handlers[event.key]:
                     handler(event.key)
