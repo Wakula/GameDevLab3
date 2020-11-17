@@ -15,11 +15,13 @@ class AbstractGame:
     def objects(self):
         return (*self.players, *self.projectiles)
 
-    def update_player_position(self, player_id, new_x, new_y):
+    def update_player_position(self, player_id, new_x, new_y, new_dir):
         for player in self.players:
             if player.player_id == player_id:
-                player.x = new_x
-                player.y = new_y
+                dx = new_x - player.bounds.x
+                dy = new_y - player.bounds.y
+                player.move(dx, dy)
+                player.direction = new_dir
     
     def update_player_health(self, player_id, new_health):
         for player in self.players:
@@ -54,3 +56,10 @@ class AbstractGame:
     def get_ticks(self):
         return pygame.time.get_ticks()
 
+    def player_exists(self, player_id):
+        return any(map(lambda p: p.player_id == player_id, self.players))
+    
+    def get_player(self, player_id):
+        for player in self.players:
+            if player.player_id == player_id:
+                return player

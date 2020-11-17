@@ -1,10 +1,10 @@
 import enum
 
 class Directions(enum.Enum):
-    UP = 'UP'
-    DOWN = 'DOWN'
-    LEFT = 'LEFT'
-    RIGHT = 'RIGHT'
+    UP = 'U'
+    DOWN = 'D'
+    LEFT = 'L'
+    RIGHT = 'R'
 
 
 DIRECTIONS_TO_DELTA = {

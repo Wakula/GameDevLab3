@@ -47,6 +47,8 @@ class UDPCommunicator:
         message = message_cls()
         message.ParseFromString(message_bytes)
         address = decode_address(sender_address_bytes)
+        print("im reading")
+        print(type(message), address)
         return message, address
 
     def send(self, message, host, port):

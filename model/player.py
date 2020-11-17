@@ -16,7 +16,7 @@ class AbstractPlayer(GameObject):
         self.game = game
         self.previous_shooting_time = None
         self.health = settings.MAX_HEALTH
-        self.id = player_id
+        self.player_id = player_id
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
         
     def shoot(self):

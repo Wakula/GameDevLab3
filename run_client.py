@@ -1,3 +1,4 @@
-from client.client import Client
+from client.client_main import Client
 
-Client().run()
+client_id = 1
+Client(client_id).run()

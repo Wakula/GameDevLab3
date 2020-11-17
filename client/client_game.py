@@ -11,12 +11,12 @@ class ClientGame(AbstractGame):
         self.key_down_handlers = defaultdict(list)
         self.key_up_handlers = defaultdict(list)
         # TODO: this should be changed for multiple players
-        x_spawn_position = int((settings.SCREEN_WIDTH - settings.PLAYER_RADIUS) / 2)
-        y_spawn_position = settings.SCREEN_HEIGHT - settings.PLAYER_RADIUS * 2
-        self.init_client_player(x_spawn_position, y_spawn_position)
-        self.init_ai_opponent(x_spawn_position, y_spawn_position)
+        #x_spawn_position = int((settings.SCREEN_WIDTH - settings.PLAYER_RADIUS) / 2)
+        #y_spawn_position = settings.SCREEN_HEIGHT - settings.PLAYER_RADIUS * 2
+        #self.init_client_player(x_spawn_position, y_spawn_position)
+        #self.init_ai_opponent(x_spawn_position, y_spawn_position)
 
-    def init_client_player(self, x_spawn, y_spawn):
+    def init_client_player(self, x_spawn, y_spawn, player_dir, player_id):
         # TODO: x_... and y_... spawn position should be reworked
         player = ClientPlayer(
             x_spawn,
@@ -25,8 +25,9 @@ class ClientGame(AbstractGame):
             settings.PLAYER_COLOR,
             settings.PLAYER_SPEED,
             self,
-            "id1"
+            player_id
         )
+        player.direction = player_dir
         for key in player.ALL_KEYS:
             self.key_down_handlers[key].append(player.handle_down)
             self.key_up_handlers[key].append(player.handle_up)
@@ -45,7 +46,7 @@ class ClientGame(AbstractGame):
         )
         self.players.append(opponent)
     
-    def init_network_opponent(self, x_spawn, y_spawn, player_id):
+    def init_network_opponent(self, x_spawn, y_spawn, player_dir, player_id):
         opponent = NetworkOpponent(
             x_spawn,
             y_spawn,
@@ -55,6 +56,7 @@ class ClientGame(AbstractGame):
             self,
             player_id
         )
+        opponent.direction = player_dir
         self.players.append(opponent)
 
     def update(self):
@@ -80,12 +82,11 @@ class ClientGame(AbstractGame):
                     handler(event.key)
 
     def run(self):
-        while not self.game_over:
-            self.surface.fill(settings.BACKGROUND_COLOR)
-            self.handle_events()
-            self.update()
-            self.draw()
+        self.surface.fill(settings.BACKGROUND_COLOR)
+        self.handle_events()
+        self.update()
+        self.draw()
 
-            pygame.display.update()
-            self.clock.tick(settings.FRAME_RATE)
+        pygame.display.update()
+        self.clock.tick(settings.FRAME_RATE)
     
