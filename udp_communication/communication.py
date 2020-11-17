@@ -57,12 +57,13 @@ class UDPCommunicator:
         # TODO: deal with lost messages
         # TODO: handle cases when not responding for too long
         approved = False
-        address = ''
+        address = None
         while not approved:
             for _ in range(REPEATED_MESSAGES_AMOUNT):
                 self._send(message, host, port)
-            while address != f'{host}:{port}':
+            while address != (host, port):
                 approval_message, address = self.read()
+            address = None
             if is_required_approval_message(message, approval_message):
                 approved = True
 

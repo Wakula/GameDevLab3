@@ -12,10 +12,8 @@ class Client:
 
     def run(self):
         connect = Connect()
-        print(self.udp_communicator.socket.getscokname())
         self.udp_communicator.send_until_approval(connect, settings.SERVER_HOST, settings.SERVER_PORT)
         message, address = self.udp_communicator.read()
-        print(address, type(message))
         if isinstance(message, GameStarted) and address == (settings.SERVER_HOST, settings.SERVER_PORT):
             game_started_ok = GameStartedOk()
             self.udp_communicator.send_until_approval(game_started_ok, settings.SERVER_HOST, settings.SERVER_PORT)
