@@ -50,8 +50,8 @@ class UDPCommunicator:
         return message, address
 
     def send(self, message, host, port):
-        # TODO: handle message.message_id
         self._send(message, host, port)
+        self.message_id += 1
 
     def send_until_approval(self, message, host, port):
         # TODO: deal with lost messages
@@ -66,11 +66,12 @@ class UDPCommunicator:
             address = None
             if is_required_approval_message(message, approval_message):
                 approved = True
+        self.message_id += 1
 
     def _send(self, message, host, port):
+        message.message_id = self.message_id
         sender_host, sender_port = self.socket.getsockname()
         sender_address_bytes = encode_address(sender_host, sender_port)
-        message.message_id = self.message_id
         message_code = MESSAGES_TO_CODES[type(message)]
         message_code_bytes = message_code.to_bytes(BYTES_FOR_MESSAGE_CODE, BYTEORDER_FOR_MESSAGE_CODE)
         message_bytes = message.SerializeToString()
