@@ -15,6 +15,17 @@ class AbstractGame:
     def objects(self):
         return (*self.players, *self.projectiles)
 
+    def update_player_position(self, player_id, new_x, new_y):
+        for player in self.players:
+            if player.player_id == player_id:
+                player.x = new_x
+                player.y = new_y
+    
+    def update_player_health(self, player_id, new_health):
+        for player in self.players:
+            if player.player_id == player_id:
+                player.health = new_health
+
     def handle_projectile_collisions(self):
         collided_projectiles = []
         dead_players = []
