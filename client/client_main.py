@@ -8,9 +8,11 @@ from udp_communication.communication import UDPCommunicator
 
 class Client:
     def __init__(self, player_id):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind(('127.0.0.1', 0))
-        self.udp_communicator = UDPCommunicator(sock)
+        read_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        read_sock.bind(('127.0.0.1', 0))
+        write_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        write_sock.bind(('127.0.0.1', 0))
+        self.udp_communicator = UDPCommunicator(read_sock, write_sock)
         self.player_id = player_id
         self.game = ClientGame()
 

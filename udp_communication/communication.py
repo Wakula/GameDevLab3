@@ -26,8 +26,9 @@ def decode_address(encoded_address):
 
 
 class UDPCommunicator:
-    def __init__(self, socket):
-        self.socket = socket
+    def __init__(self, read_socket, write_socket):
+        self.read_socket = read_socket
+        self.write_socket = write_socket
         self.message_id = 1
         self.message_to_read = None
 
@@ -37,7 +38,7 @@ class UDPCommunicator:
     def read(self):
         if self.message_to_read:
             return self.message_to_read
-        encoded_message = self.socket.recv(MAX_MESSAGE_LEN)
+        encoded_message = self.read_socket.recv(MAX_MESSAGE_LEN)
         sender_address_bytes = encoded_message[:6]
         message_code_bytes = encoded_message[6:6+BYTES_FOR_MESSAGE_CODE]
         message_bytes = encoded_message[6+BYTES_FOR_MESSAGE_CODE:]
@@ -70,7 +71,7 @@ class UDPCommunicator:
                 approved = True
 
     def _send(self, message, host, port):
-        sender_host, sender_port = self.socket.getsockname()
+        sender_host, sender_port = self.read_socket.getsockname()
         sender_address_bytes = encode_address(sender_host, sender_port)
         message.message_id = self.message_id
         message_code = MESSAGES_TO_CODES[type(message)]
@@ -78,4 +79,4 @@ class UDPCommunicator:
         message_bytes = message.SerializeToString()
         # TODO: handle if message len is too long
         encoded_message = sender_address_bytes + message_code_bytes + message_bytes
-        self.socket.sendto(encoded_message, (host, port))
+        self.write_socket.sendto(encoded_message, (host, port))
