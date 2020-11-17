@@ -3,18 +3,22 @@ syntax = "proto2";
 
 message Connect {
   optional int32 message_id = 1;
+  optional int32 player_id = 2;
 }
 message GameStarted {
   optional int32 message_id = 1;
 }
 message GameStartedOk {
   optional int32 message_id = 1;
+  optional int32 player_id = 2;
 }
 message ShootOk {
   optional int32 message_id = 1;
+  optional int32 player_id = 2;
 }
 message GotShotOk {
   optional int32 message_id = 1;
+  optional int32 player_id = 2;
 }
 
 message PlayerState {
@@ -33,7 +37,7 @@ message ShootEvent {
   optional int32 damage = 4;
   optional string direction = 5;
   optional int32 speed = 6;
-  optional int32 owner_id = 7;
+  optional int32 player_id = 7;
 }
 
 message GameState {
