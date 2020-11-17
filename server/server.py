@@ -1,16 +1,22 @@
 import socket
 import settings
-from udp_communication.messages.game_state_pb2 import GameState
+from udp_communication.communication import UDPCommunicator
+from udp_communication.messages.messages_pb2 import Connect, GameStarted, GameStartedOk
 
 
 class Server:
     def __init__(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.bind((settings.SERVER_HOST, settings.SERVER_PORT))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind((settings.SERVER_HOST, settings.SERVER_PORT))
+        self.udp_communicator = UDPCommunicator(sock)
 
     def run(self):
         while True:
-            game_state = GameState()
-            data, address = self.socket.recvfrom(1024)
-            game_state.ParseFromString(data)
-            print(game_state, address)
+            message, address = self.udp_communicator.read()
+            host, port = address
+            print(host, port, type(message))
+            if isinstance(message, Connect):
+                game_started = GameStarted()
+                self.udp_communicator.send_until_approval(game_started, host, port)
+            if isinstance(message, GameStartedOk):
+                print('SUCCESS')

@@ -1,29 +1,21 @@
 import socket
 import settings
-from udp_communication.messages.game_state_pb2 import GameState
+from udp_communication.messages.messages_pb2 import Connect, GameStartedOk, GameStarted
+from udp_communication.communication import UDPCommunicator
 
 
 class Client:
     def __init__(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind(('127.0.0.1', 0))
+        self.udp_communicator = UDPCommunicator(sock)
 
     def run(self):
-        # while True:
-        game_state = GameState()
-        player = game_state.players.add()
-        player.id = 1
-        player.x = 35
-        player.y = 125
-        player.health = 100
-        player.direction = 'LEFT'
-        player.speed = 10
-        projectile = game_state.projectiles.add()
-        projectile.id = 3
-        projectile.x = 15
-        projectile.y = 16
-        projectile.damage = 5
-        projectile.speed = 13
-        projectile.owner_id = 1
-        message = game_state.SerializeToString()
-        len(message)
-        self.socket.sendto(message, (settings.SERVER_HOST, settings.SERVER_PORT))
+        connect = Connect()
+        print(self.udp_communicator.socket.getscokname())
+        self.udp_communicator.send_until_approval(connect, settings.SERVER_HOST, settings.SERVER_PORT)
+        message, address = self.udp_communicator.read()
+        print(address, type(message))
+        if isinstance(message, GameStarted) and address == (settings.SERVER_HOST, settings.SERVER_PORT):
+            game_started_ok = GameStartedOk()
+            self.udp_communicator.send_until_approval(game_started_ok, settings.SERVER_HOST, settings.SERVER_PORT)
