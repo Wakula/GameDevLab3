@@ -3,9 +3,6 @@ from model.game import AbstractGame
 import settings
 
 class ServerGame(AbstractGame):
-    def __init__(self):
-        super.__init__()
-
     def init_player(self, player_id):
         pass
 

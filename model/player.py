@@ -17,6 +17,8 @@ class AbstractPlayer(GameObject):
         self.previous_shooting_time = None
         self.health = settings.MAX_HEALTH
         self.id = player_id
+        self.projectile_speed = settings.PROJECTILE_SPEED
+        self.projectile_damage = settings.PROJECTILE_BASE_DAMAGE
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
         
     def shoot(self):
@@ -26,9 +28,9 @@ class AbstractPlayer(GameObject):
         projectile = Projectile(
             *self.bounds.center,
             settings.PROJECTILE_RADIUS, settings.PROJECTILE_COLOR,
-            settings.PROJECTILE_SPEED,
+            self.projectile_speed,
             self,
-            settings.PROJECTILE_BASE_DAMAGE
+            self.projectile_damage,
         )
         self.game.projectiles.append(projectile)
 

@@ -6,6 +6,7 @@ import pygame
 
 class Projectile(GameObject):
     projectile_count = 0
+
     def __init__(self, x, y, radius, color, speed, owner, damage):
         self.radius = radius
         self.diameter = 2 * radius

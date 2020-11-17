@@ -61,6 +61,9 @@ class ClientGame(AbstractGame):
         for game_object in self.objects:
             game_object.update()
         self.handle_projectile_collisions()
+        self.handle_boosts_collisions()
+        self.try_undo_boosts_effects()
+        self.spawn_boosts()
 
     def draw(self):
         for game_object in self.objects:
@@ -88,4 +91,5 @@ class ClientGame(AbstractGame):
 
             pygame.display.update()
             self.clock.tick(settings.FRAME_RATE)
-    
+            print('attached_boosts', self.attached_boosts)
+            print('boosts_on_field', self.boosts_on_field)
