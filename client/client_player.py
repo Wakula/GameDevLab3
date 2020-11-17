@@ -120,3 +120,17 @@ class Opponent(ClientPlayer):
             self.current_key = random.choice(tuple(self.KEYS_TO_DIRECTIONS))
         super().handle_down(self.current_key)
         super().update()
+
+class NetworkOpponent(ClientPlayer):
+    def __init__(self, x, y, radius, color, offset, game, player_id):
+        super().__init__(x, y, radius, color, offset, game, player_id)
+        self.current_key = None
+
+    def handle_up(self, key):
+        pass
+
+    def handle_down(self, key):
+        pass
+
+    def update(self):
+        pass
