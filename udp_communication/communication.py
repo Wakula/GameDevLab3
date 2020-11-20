@@ -83,7 +83,7 @@ class UDPCommunicator:
             for _ in range(REPEATED_MESSAGES_AMOUNT):
                 self._send(message, host, port)
             while address != (host, port):
-                approval_message, address = self.read()
+                approval_message, address = self._read()
             address = None
             if is_required_approval_message(message, approval_message):
                 self.message_id += 1
