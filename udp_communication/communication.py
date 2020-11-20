@@ -69,6 +69,7 @@ class UDPCommunicator:
             address = None
             if is_required_approval_message(message, approval_message):
                 approved = True
+                return approval_message
 
     def _send(self, message, host, port):
         sender_host, sender_port = self.read_socket.getsockname()

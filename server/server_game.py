@@ -1,8 +1,10 @@
 from collections import defaultdict
 from model.game import AbstractGame
 from server.server_player import ServerPlayer
+from udp_communication.messages.messages_pb2 import PlayerState, GameState
 import settings
 import random
+import model.udp_helper as udp_helper
 
 class ServerGame(AbstractGame):
     def __init__(self):
@@ -30,3 +32,10 @@ class ServerGame(AbstractGame):
     def run(self):
         self.update()
         self.clock.tick(settings.FRAME_RATE)
+
+    def create_game_state(self):
+        game_state = GameState()
+        for player in self.players:
+            player_state = udp_helper.create_player_state(player)
+            game_state.players.append(player_state)
+        return game_state
