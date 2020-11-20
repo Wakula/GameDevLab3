@@ -10,6 +10,8 @@ class ClientGame(AbstractGame):
         self.surface = pygame.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
         self.key_down_handlers = defaultdict(list)
         self.key_up_handlers = defaultdict(list)
+        pygame.font.init()
+        self.game_font = pygame.font.SysFont(settings.FONT, settings.FONT_SIZE)
         # TODO: this should be changed for multiple players
         #x_spawn_position = int((settings.SCREEN_WIDTH - settings.PLAYER_RADIUS) / 2)
         #y_spawn_position = settings.SCREEN_HEIGHT - settings.PLAYER_RADIUS * 2
@@ -80,6 +82,27 @@ class ClientGame(AbstractGame):
             elif event.type == pygame.KEYUP:
                 for handler in self.key_up_handlers[event.key]:
                     handler(event.key)
+
+    def handle_start(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+                
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                return True
+
+        return False
+
+    def show_start_screen(self):
+        while not self.handle_start():
+            textsurface = self.game_font.render(settings.START_SCREEN_TEXT, False, settings.FONT_COLOR)
+            img = self.game_font.render(settings.FONT, True, settings.FONT_COLOR)
+            rect = img.get_rect()
+            center_x = settings.SCREEN_WIDTH / 2 - rect.width
+            center_y = settings.SCREEN_HEIGHT / 2 - rect.height / 2
+            self.surface.blit(textsurface, (center_x, center_y))
+            pygame.display.update()
 
     def run(self):
         self.surface.fill(settings.BACKGROUND_COLOR)
