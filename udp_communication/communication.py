@@ -45,7 +45,7 @@ class UDPCommunicator:
 
     def read(self):
         address_to_messages = defaultdict(dict)
-        for _ in range(20):
+        for _ in range(2):
             try:
                 message, address = self._read()
             except timeout:

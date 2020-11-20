@@ -16,6 +16,7 @@ class Client:
         self.game = ClientGame()
 
     def run(self):
+        self.game.show_start_screen()
         self.connect_to_server()
         while not self.game.game_over:
             self.read_socket()
@@ -57,5 +58,12 @@ class Client:
         address, messages = address_to_messages.popitem()
         for message in messages:
             if isinstance(message, PlayerState):
+                player_id = message.player_id
+                if not self.game.player_exists(player_id):
+                    if self.player_id == player_id:
+                        self.game.init_client_player(message.x, message.y, Directions(message.direction), message.player_id)
+                    else:
+                        self.game.init_network_opponent(message.x, message.y, Directions(message.direction), message.player_id)
+
                 if message.player_id != self.player_id:
                     self.game.update_player_position(message.player_id, message.x, message.y, Directions(message.direction))
