@@ -19,9 +19,6 @@ class Server:
         return time.time()
 
     def run(self):
-        #start_time = self.time()
-        #message, address = self.udp_communicator.read()
-        #host, port = address
         while True:
             message, address = self.udp_communicator.read()
             host, port = address
