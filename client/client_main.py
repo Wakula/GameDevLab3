@@ -22,17 +22,20 @@ class Client:
             self.send_state()
             self.game.run()
 
-
     def connect_to_server(self):
         connect = Connect()
         connect.player_id = self.player_id
         self.udp_communicator.send_until_approval(connect, settings.SERVER_HOST, settings.SERVER_PORT)
-        message, address = self.udp_communicator.read()
-        if isinstance(message, GameStarted) and address == (settings.SERVER_HOST, settings.SERVER_PORT):
-            game_started_ok = GameStartedOk()
-            game_started_ok.player_id = self.player_id
-            game_state = self.udp_communicator.send_until_approval(game_started_ok, settings.SERVER_HOST, settings.SERVER_PORT)
-            self.init_game(game_state)
+        address_to_messages = None
+        while not address_to_messages:
+            address_to_messages = self.udp_communicator.read()
+        address, messages = address_to_messages.popitem()
+        for message in messages:
+            if isinstance(message, GameStarted) and address == (settings.SERVER_HOST, settings.SERVER_PORT):
+                game_started_ok = GameStartedOk()
+                game_started_ok.player_id = self.player_id
+                game_state = self.udp_communicator.send_until_approval(game_started_ok, settings.SERVER_HOST, settings.SERVER_PORT)
+                self.init_game(game_state)
     
     def send_state(self):
         player = self.game.get_player(self.player_id)
@@ -47,10 +50,12 @@ class Client:
             else:
                 self.game.init_network_opponent(player.x, player.y, Directions(player.direction), player.player_id)
 
-
     def read_socket(self):
-        message, address = self.udp_communicator.read()
-        if isinstance(message, PlayerState):
-            player_id = message.player_id
-            if message.player_id != self.player_id:
-                self.game.update_player_position(message.player_id, message.x, message.y, Directions(message.direction))   
+        address_to_messages = self.udp_communicator.read()
+        if not address_to_messages:
+            return
+        address, messages = address_to_messages.popitem()
+        for message in messages:
+            if isinstance(message, PlayerState):
+                if message.player_id != self.player_id:
+                    self.game.update_player_position(message.player_id, message.x, message.y, Directions(message.direction))
