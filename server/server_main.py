@@ -33,12 +33,14 @@ class Server:
 
         elif isinstance(message, PlayerState):
             player_id = message.player_id
-            self.game.update_player_position(player_id, message.x, message.y, Directions(message.direction))
+            was_updated = self.game.update_player_position(player_id, message.x, message.y, Directions(message.direction))
             updated_player = self.game.get_player(player_id)
             updated_player_state = udp_helper.create_player_state(updated_player)
-            for client in self.clients:
-                if client.player_id != player_id:
-                    self.udp_communicator.send(updated_player_state, client.host, client.port)
+            if was_updated:
+                updated_player.was_updated = True
+                for client in self.clients:
+                    if client.player_id != player_id:
+                        self.udp_communicator.send(updated_player_state, client.host, client.port)
 
     def run(self):
         while True:
@@ -54,10 +56,12 @@ class Server:
 
     def send_player_states(self):
         for player in self.game.players:
-            player_state = udp_helper.create_player_state(player)
-            for client in self.clients:
-                if client.player_id != player_state.player_id:
-                    self.udp_communicator.send(player_state, client.host, client.port)
+            if player.was_updated:
+                player.was_updated = False
+                player_state = udp_helper.create_player_state(player)
+                for client in self.clients:
+                    if client.player_id != player_state.player_id:
+                        self.udp_communicator.send(player_state, client.host, client.port)
 
 
 class Client:

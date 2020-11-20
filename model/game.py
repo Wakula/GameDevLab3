@@ -16,12 +16,16 @@ class AbstractGame:
         return (*self.players, *self.projectiles)
 
     def update_player_position(self, player_id, new_x, new_y, new_dir):
+        was_updated = False
         for player in self.players:
             if player.player_id == player_id:
                 dx = new_x - player.bounds.x
                 dy = new_y - player.bounds.y
                 player.move(dx, dy)
+                prev_dir = player.direction
                 player.direction = new_dir
+                was_updated = dx != 0 or dy != 0 or new_dir != prev_dir
+        return was_updated
     
     def update_player_health(self, player_id, new_health):
         for player in self.players:

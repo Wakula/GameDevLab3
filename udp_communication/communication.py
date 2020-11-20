@@ -31,7 +31,7 @@ def decode_address(encoded_address):
 class UDPCommunicator:
     def __init__(self, host, read_port=0):
         read_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        read_sock.settimeout(0.1)
+        read_sock.settimeout(0.02)
         write_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         read_sock.bind((host, read_port))
         write_sock.bind((host, 0))
