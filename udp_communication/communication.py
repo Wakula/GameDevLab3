@@ -1,4 +1,5 @@
 from collections import defaultdict
+from udp_communication import constants
 from socket import timeout
 import socket
 from udp_communication.constants import (
@@ -31,7 +32,7 @@ def decode_address(encoded_address):
 class UDPCommunicator:
     def __init__(self, host, read_port=0):
         read_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        read_sock.settimeout(0.1)
+        read_sock.settimeout(constants.SOCKET_TIMEOUT)
         write_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         read_sock.bind((host, read_port))
         write_sock.bind((host, 0))
@@ -45,7 +46,7 @@ class UDPCommunicator:
 
     def read(self):
         address_to_messages = defaultdict(dict)
-        for _ in range(2):
+        for _ in range(constants.MESSAGES_PER_READ):
             try:
                 message, address = self._read()
             except timeout:

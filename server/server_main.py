@@ -19,15 +19,7 @@ class Server:
         return time.time()
 
     def handle_client_message(self, message, host, port):
-        if isinstance(message, Connect):
-            game_started = GameStarted()
-            self.udp_communicator.send_until_approval(game_started, host, port)
-            self.game.init_player(message.player_id)
-            self.clients.append(Client(host, port, message.player_id))
-            game_state = self.game.create_game_state()
-            self.udp_communicator.send(game_state, host, port)
-
-        elif isinstance(message, GameStartedOk):
+        if isinstance(message, GameStartedOk):
             game_state = self.game.create_game_state()
             self.udp_communicator.send(game_state, host, port)
 
@@ -40,7 +32,27 @@ class Server:
                 if client.player_id != player_id:
                     self.udp_communicator.send(updated_player_state, client.host, client.port)
 
+    def create_room(self):
+        while len(self.clients) < settings.CLIENTS_AMOUNT:
+            address_to_messages = self.udp_communicator.read()
+            if not address_to_messages:
+                continue
+            for address, messages in address_to_messages.items():
+                for message in messages:
+                    if any(map(lambda c: c.player_id == message.player_id, self.clients)):
+                        continue
+                    if isinstance(message, Connect):
+                        self.game.init_player(message.player_id)
+                        self.clients.append(Client(*address, message.player_id))
+                        break
+        for client in self.clients:
+            game_started = GameStarted()
+            self.udp_communicator.send_until_approval(game_started, client.host, client.port)
+            game_state = self.game.create_game_state()
+            self.udp_communicator.send(game_state, client.host, client.port)
+
     def run(self):
+        self.create_room()
         while True:
             address_to_messages = self.udp_communicator.read()
             if address_to_messages:

@@ -39,5 +39,3 @@ class AbstractPlayer(GameObject):
         ):
             return False
         return True
-
-
