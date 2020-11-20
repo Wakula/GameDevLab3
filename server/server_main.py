@@ -11,11 +11,7 @@ from udp_communication.messages.messages_pb2 import Connect, GameStarted, GameSt
 
 class Server:
     def __init__(self):
-        read_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        write_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        read_sock.bind((settings.SERVER_HOST, settings.SERVER_PORT))
-        write_sock.bind((settings.SERVER_HOST, 0))
-        self.udp_communicator = UDPCommunicator(read_sock, write_sock)
+        self.udp_communicator = UDPCommunicator((settings.SERVER_HOST, settings.SERVER_PORT))
         self.game = ServerGame()
         self.clients = []
 
