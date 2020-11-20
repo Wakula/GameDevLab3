@@ -31,16 +31,18 @@ message PlayerState {
 }
 
 message ShootEvent {
-  optional int32 projectile_id = 1;
-  optional int32 x = 2;
-  optional int32 y = 3;
-  optional int32 damage = 4;
-  optional string direction = 5;
-  optional int32 speed = 6;
-  optional int32 player_id = 7;
+  optional int32 message_id = 1;
+  optional int32 projectile_id = 2;
+  optional int32 x = 3;
+  optional int32 y = 4;
+  optional int32 damage = 5;
+  optional string direction = 6;
+  optional int32 speed = 7;
+  optional int32 player_id = 8;
 }
 
 message GameState {
-  repeated PlayerState players = 1;
-  repeated ShootEvent projectiles = 2;
+  optional int32 message_id = 1;
+  repeated PlayerState players = 2;
+  repeated ShootEvent projectiles = 3;
 }
