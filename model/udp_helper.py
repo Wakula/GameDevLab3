@@ -25,6 +25,13 @@ def create_boost_message(boost):
     return boost_message
 
 
+def create_boost_pick_up_message(boost):
+    boost_pick_up = messages_pb2.BoostPickUp()
+    boost_pick_up.player_id = boost.player.player_id
+    boost_pick_up.boost_id = boost.boost_id
+    return boost_pick_up
+
+
 def create_dead_player_state(player_id):
     player_state = messages_pb2.PlayerIsDead()
     player_state.player_id = player_id

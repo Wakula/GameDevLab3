@@ -39,6 +39,7 @@ class UDPCommunicator:
         self.message_id = 1
         self.is_client = is_client
         self.last_approval_message_id = None
+        self.unfinished_approvals = []
 
     def is_required_approval_message(self, message, approval_message):
         if type(message) in MESSAGE_TO_ID_APPROVAL:
@@ -77,14 +78,23 @@ class UDPCommunicator:
         address = decode_address(sender_address_bytes)
         return message, address
 
+    def send_unfinished_approvals(self):
+        if self.unfinished_approvals:
+            unfinished_approvals = self.unfinished_approvals
+            self.unfinished_approvals = []
+            for approval in unfinished_approvals:
+                message, host, port = approval
+                message.message_id = self.message_id
+                self.send_until_approval(message, host, port)
+
     def send(self, message, host, port):
+        self.send_unfinished_approvals()
         self._send(message, host, port)
         self.message_id += 1
 
     def send_until_approval(self, message, host, port):
-        # TODO: deal with lost messages
-        # TODO: handle cases when not responding for too long
-        while True:
+        self.send_unfinished_approvals()
+        for _ in range(constants.APPROVAL_TRIES):
             self._send(message, host, port)
             try:
                 approval_message, address = self._read()
@@ -94,6 +104,7 @@ class UDPCommunicator:
                 self.message_id += 1
                 self.last_approval_message_id = approval_message.message_id
                 return approval_message
+        self.unfinished_approvals.append((message, host, port))
 
     def _send(self, message, host, port):
         message.message_id = self.message_id

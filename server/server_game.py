@@ -19,6 +19,7 @@ class ServerGame(AbstractGame):
     def __init__(self):
         super().__init__()
         self.spawned_boost = None
+        self.removed_boosts = None
         self.boost_id = 1
 
     def init_player(self, player_id):
@@ -51,8 +52,21 @@ class ServerGame(AbstractGame):
             h=settings.BOOST_WIDTH,
         )
         self.boost_id += 1
-        self.boosts_on_field.append(boost)
+        self.boosts_on_field[boost.boost_id] = boost
         self.spawned_boost = boost
+
+    def handle_boosts_collisions(self):
+        removed_boosts_from_field = []
+        for boost in self.boosts_on_field.values():
+            for player in self.players.values():
+                if player.bounds.colliderect(boost.bounds):
+                    boost.attach_to_player(player)
+                    boost.apply_effect()
+                    self.attached_boosts.append(boost)
+                    removed_boosts_from_field.append(boost)
+        for boost in removed_boosts_from_field:
+            del self.boosts_on_field[boost.boost_id]
+        self.removed_boosts = removed_boosts_from_field
 
     def update(self):
         for game_object in self.objects:

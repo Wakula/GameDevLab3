@@ -8,14 +8,14 @@ class AbstractGame:
         pygame.init()
         self.players = {}
         self.projectiles = {}
-        self.boosts_on_field = []
+        self.boosts_on_field = {}
         self.attached_boosts = []
         self.clock = pygame.time.Clock()
         self.dead_players = set()
 
     @property
     def objects(self):
-        return (*self.players.values(), *self.projectiles.values(), *self.boosts_on_field)
+        return (*self.players.values(), *self.projectiles.values(), *self.boosts_on_field.values())
 
     def is_game_over(self):
         return len(self.players.values()) < 2 and len(self.dead_players) > 0
@@ -47,18 +47,6 @@ class AbstractGame:
             del self.projectiles[projectile.id]
         for player in dead_players:
             del self.players[player.player_id]
-
-    def handle_boosts_collisions(self):
-        removed_boosts_from_field = []
-        for boost in self.boosts_on_field:
-            for player in self.players.values():
-                if player.bounds.colliderect(boost.bounds):
-                    boost.attach_to_player(player)
-                    boost.apply_effect()
-                    self.attached_boosts.append(boost)
-                    removed_boosts_from_field.append(boost)
-        for boost in removed_boosts_from_field:
-            self.boosts_on_field.remove(boost)
 
     def try_undo_boosts_effects(self):
         undone_boosts = []

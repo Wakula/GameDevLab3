@@ -8,6 +8,7 @@ class AbstractBoost(GameObject):
 
     def __init__(self, boost_id, x, y, w, h):
         self.player = None
+        self.is_deactivated = True
         self.boost_id = boost_id
         super().__init__(x, y, w, h)
 
@@ -16,15 +17,16 @@ class AbstractBoost(GameObject):
 
     def attach_to_player(self, player):
         self.player = player
+        self.is_deactivated = False
 
     def is_effect_undone(self):
-        return not self.player
+        return self.is_deactivated
 
     def apply_effect(self):
         raise NotImplementedError
 
     def try_undo_effect(self):
-        self.player = None
+        self.is_deactivated = True
 
 
 class HealthBoost(AbstractBoost):
@@ -55,13 +57,13 @@ class AbstractMultiplierBoostWithDuration(AbstractBoost):
     def apply_effect(self):
         boosted_value = self.get_boosted_value()
         if self.get_player_value() == boosted_value:
-            self.player = None
+            self.is_deactivated = True
             return
         self.effect_started = pygame.time.get_ticks()
         self.set_value(boosted_value)
 
     def try_undo_effect(self):
-        if self.player is None or pygame.time.get_ticks() - self.effect_started < self.DURATION:
+        if self.is_deactivated or pygame.time.get_ticks() - self.effect_started < self.DURATION:
             return
         self.set_value(self.VALUE_TO_BOOST)
         super().try_undo_effect()

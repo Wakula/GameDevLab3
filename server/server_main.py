@@ -94,6 +94,15 @@ class Server:
                 self.udp_communicator.send_until_approval(boost_message, client.host, client.port)
             self.game.spawned_boost = None
 
+        if self.game.removed_boosts:
+            for removed_boost in self.game.removed_boosts:
+                pick_up_message = udp_helper.create_boost_pick_up_message(removed_boost)
+                for client in self.clients:
+                    if client.player_id in self.dead_client_ids:
+                        continue
+                    self.udp_communicator.send_until_approval(pick_up_message, client.host, client.port)
+            self.game.removed_boosts = None
+
         for player in self.game.players.values():
             player_state = udp_helper.create_player_state(player)
             for client in self.clients:

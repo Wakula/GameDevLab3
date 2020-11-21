@@ -37,7 +37,9 @@ class Client:
             if isinstance(message, messages_pb2.GameStarted) and address == (settings.SERVER_HOST, settings.SERVER_PORT):
                 game_started_ok = messages_pb2.GameStartedOk()
                 game_started_ok.player_id = self.player_id
-                game_state = self.udp_communicator.send_until_approval(game_started_ok, settings.SERVER_HOST, settings.SERVER_PORT)
+                game_state = None
+                while not game_state:
+                    game_state = self.udp_communicator.send_until_approval(game_started_ok, settings.SERVER_HOST, settings.SERVER_PORT)
                 self.init_game(game_state)
 
     def send_actions(self):
@@ -102,10 +104,14 @@ class Client:
 
         elif isinstance(message, messages_pb2.Boost):
             boost = udp_helper.create_boost(message)
-            self.game.boosts_on_field.append(boost)
+            self.game.boosts_on_field[boost.boost_id] = boost
             self.udp_communicator.send_until_approval(
                 messages_pb2.BoostOk(), settings.SERVER_HOST, settings.SERVER_PORT
             )
+
+        elif isinstance(message, messages_pb2.BoostPickUp):
+            self.game.boosts_on_field.pop(message.boost_id, None)
+            self.udp_communicator.send_until_approval(messages_pb2.BoostPickUpOk(), settings.SERVER_HOST, settings.SERVER_PORT)
 
     def read_socket(self):
         address_to_messages = self.udp_communicator.read()
