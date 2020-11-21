@@ -15,7 +15,7 @@ class Projectile(GameObject):
         self.owner = owner
         self.damage = damage
         Projectile.projectile_count += 1
-        self.id = Projectile.projectile_count
+        self.id = (owner.player_id, Projectile.projectile_count)
         dx, dy = x_direction * speed, y_direction * speed
         super().__init__(x - radius, y - radius, self.diameter, self.diameter, (dx, dy))
 

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0emessages.proto\"0\n\x07\x43onnect\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"!\n\x0bGameStarted\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\"6\n\rGameStartedOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"0\n\x07ShootOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"2\n\tGotShotOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"l\n\x0bPlayerState\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x11\n\tdirection\x18\x05 \x01(\t\x12\r\n\x05speed\x18\x06 \x01(\x05\"~\n\nShootEvent\x12\x15\n\rprojectile_id\x18\x01 \x01(\x05\x12\t\n\x01x\x18\x02 \x01(\x05\x12\t\n\x01y\x18\x03 \x01(\x05\x12\x0e\n\x06\x64\x61mage\x18\x04 \x01(\x05\x12\x11\n\tdirection\x18\x05 \x01(\t\x12\r\n\x05speed\x18\x06 \x01(\x05\x12\x11\n\tplayer_id\x18\x07 \x01(\x05\"L\n\tGameState\x12\x1d\n\x07players\x18\x01 \x03(\x0b\x32\x0c.PlayerState\x12 \n\x0bprojectiles\x18\x02 \x03(\x0b\x32\x0b.ShootEvent'
+  serialized_pb=b'\n\x0emessages.proto\"0\n\x07\x43onnect\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"!\n\x0bGameStarted\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\"6\n\rGameStartedOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"0\n\x07ShootOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"2\n\tGotShotOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"|\n\x0bPlayerState\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x11\n\tdirection\x18\x05 \x01(\t\x12\r\n\x05speed\x18\x06 \x01(\x05\x12\x0e\n\x06health\x18\x07 \x01(\x05\"\x92\x01\n\nShootEvent\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x15\n\rprojectile_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x0e\n\x06\x64\x61mage\x18\x05 \x01(\x05\x12\x11\n\tdirection\x18\x06 \x01(\t\x12\r\n\x05speed\x18\x07 \x01(\x05\x12\x11\n\tplayer_id\x18\x08 \x01(\x05\"L\n\x0cGotShotEvent\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x15\n\rprojectile_id\x18\x02 \x01(\x05\x12\x11\n\tplayer_id\x18\x08 \x01(\x05\"`\n\tGameState\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x1d\n\x07players\x18\x02 \x03(\x0b\x32\x0c.PlayerState\x12 \n\x0bprojectiles\x18\x03 \x03(\x0b\x32\x0b.ShootEvent\"5\n\x0cPlayerIsDead\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"$\n\x0ePlayerIsDeadOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05'
 )
 
 
@@ -263,75 +263,8 @@ _PLAYERSTATE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=261,
-  serialized_end=369,
-)
-
-
-_SHOOTEVENT = _descriptor.Descriptor(
-  name='ShootEvent',
-  full_name='ShootEvent',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
     _descriptor.FieldDescriptor(
-      name='projectile_id', full_name='ShootEvent.projectile_id', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='x', full_name='ShootEvent.x', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='y', full_name='ShootEvent.y', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='damage', full_name='ShootEvent.damage', index=3,
-      number=4, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='direction', full_name='ShootEvent.direction', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='speed', full_name='ShootEvent.speed', index=5,
-      number=6, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='player_id', full_name='ShootEvent.player_id', index=6,
+      name='health', full_name='PlayerState.health', index=6,
       number=7, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -349,8 +282,135 @@ _SHOOTEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=371,
-  serialized_end=497,
+  serialized_start=261,
+  serialized_end=385,
+)
+
+
+_SHOOTEVENT = _descriptor.Descriptor(
+  name='ShootEvent',
+  full_name='ShootEvent',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='ShootEvent.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='projectile_id', full_name='ShootEvent.projectile_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='x', full_name='ShootEvent.x', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='y', full_name='ShootEvent.y', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='damage', full_name='ShootEvent.damage', index=4,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='direction', full_name='ShootEvent.direction', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='speed', full_name='ShootEvent.speed', index=6,
+      number=7, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='player_id', full_name='ShootEvent.player_id', index=7,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=388,
+  serialized_end=534,
+)
+
+
+_GOTSHOTEVENT = _descriptor.Descriptor(
+  name='GotShotEvent',
+  full_name='GotShotEvent',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='GotShotEvent.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='projectile_id', full_name='GotShotEvent.projectile_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='player_id', full_name='GotShotEvent.player_id', index=2,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=536,
+  serialized_end=612,
 )
 
 
@@ -363,15 +423,22 @@ _GAMESTATE = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='players', full_name='GameState.players', index=0,
-      number=1, type=11, cpp_type=10, label=3,
+      name='message_id', full_name='GameState.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='players', full_name='GameState.players', index=1,
+      number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='projectiles', full_name='GameState.projectiles', index=1,
-      number=2, type=11, cpp_type=10, label=3,
+      name='projectiles', full_name='GameState.projectiles', index=2,
+      number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -388,8 +455,79 @@ _GAMESTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=499,
-  serialized_end=575,
+  serialized_start=614,
+  serialized_end=710,
+)
+
+
+_PLAYERISDEAD = _descriptor.Descriptor(
+  name='PlayerIsDead',
+  full_name='PlayerIsDead',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='PlayerIsDead.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='player_id', full_name='PlayerIsDead.player_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=712,
+  serialized_end=765,
+)
+
+
+_PLAYERISDEADOK = _descriptor.Descriptor(
+  name='PlayerIsDeadOk',
+  full_name='PlayerIsDeadOk',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='PlayerIsDeadOk.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=767,
+  serialized_end=803,
 )
 
 _GAMESTATE.fields_by_name['players'].message_type = _PLAYERSTATE
@@ -401,7 +539,10 @@ DESCRIPTOR.message_types_by_name['ShootOk'] = _SHOOTOK
 DESCRIPTOR.message_types_by_name['GotShotOk'] = _GOTSHOTOK
 DESCRIPTOR.message_types_by_name['PlayerState'] = _PLAYERSTATE
 DESCRIPTOR.message_types_by_name['ShootEvent'] = _SHOOTEVENT
+DESCRIPTOR.message_types_by_name['GotShotEvent'] = _GOTSHOTEVENT
 DESCRIPTOR.message_types_by_name['GameState'] = _GAMESTATE
+DESCRIPTOR.message_types_by_name['PlayerIsDead'] = _PLAYERISDEAD
+DESCRIPTOR.message_types_by_name['PlayerIsDeadOk'] = _PLAYERISDEADOK
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Connect = _reflection.GeneratedProtocolMessageType('Connect', (_message.Message,), {
@@ -453,12 +594,33 @@ ShootEvent = _reflection.GeneratedProtocolMessageType('ShootEvent', (_message.Me
   })
 _sym_db.RegisterMessage(ShootEvent)
 
+GotShotEvent = _reflection.GeneratedProtocolMessageType('GotShotEvent', (_message.Message,), {
+  'DESCRIPTOR' : _GOTSHOTEVENT,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:GotShotEvent)
+  })
+_sym_db.RegisterMessage(GotShotEvent)
+
 GameState = _reflection.GeneratedProtocolMessageType('GameState', (_message.Message,), {
   'DESCRIPTOR' : _GAMESTATE,
   '__module__' : 'messages_pb2'
   # @@protoc_insertion_point(class_scope:GameState)
   })
 _sym_db.RegisterMessage(GameState)
+
+PlayerIsDead = _reflection.GeneratedProtocolMessageType('PlayerIsDead', (_message.Message,), {
+  'DESCRIPTOR' : _PLAYERISDEAD,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:PlayerIsDead)
+  })
+_sym_db.RegisterMessage(PlayerIsDead)
+
+PlayerIsDeadOk = _reflection.GeneratedProtocolMessageType('PlayerIsDeadOk', (_message.Message,), {
+  'DESCRIPTOR' : _PLAYERISDEADOK,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:PlayerIsDeadOk)
+  })
+_sym_db.RegisterMessage(PlayerIsDeadOk)
 
 
 # @@protoc_insertion_point(module_scope)

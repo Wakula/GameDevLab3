@@ -5,9 +5,12 @@ import pygame
 
 class AbstractBoost(GameObject):
     COLOR = None
+    boost_count = 0
 
     def __init__(self, x, y, w, h):
         self.player = None
+        self.boost_id = AbstractBoost.boost_count
+        AbstractBoost.boost_count += 1
         super().__init__(x, y, w, h)
 
     def draw(self, surface):

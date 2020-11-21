@@ -12,17 +12,17 @@ class AbstractPlayer(GameObject):
         self.radius = radius
         self.diameter = 2 * radius
         self.direction = Directions.UP
-        self.projectile_speed = settings.PROJECTILE_SPEED
         self.game = game
         self.previous_shooting_time = None
         self.health = settings.MAX_HEALTH
-        self.id = player_id
         self.projectile_speed = settings.PROJECTILE_SPEED
         self.projectile_damage = settings.PROJECTILE_BASE_DAMAGE
+        self.player_id = player_id
+        self.shot_projectile = None
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
         
     def shoot(self):
-        if self.is_on_recharge():
+        if self.is_on_recharge() or self.player_id in self.game.dead_players:
             return
         self.previous_shooting_time = pygame.time.get_ticks()
         projectile = Projectile(
@@ -32,7 +32,8 @@ class AbstractPlayer(GameObject):
             self,
             self.projectile_damage,
         )
-        self.game.projectiles.append(projectile)
+        self.game.projectiles[projectile.id] = projectile
+        self.shot_projectile = projectile
 
     def is_on_recharge(self):
         if (
@@ -41,5 +42,3 @@ class AbstractPlayer(GameObject):
         ):
             return False
         return True
-
-

@@ -1,13 +1,14 @@
+from collections import defaultdict
+from udp_communication import constants
+from socket import timeout
+import socket
 from udp_communication.constants import (
-    BYTEORDER_FOR_MESSAGE_CODE, BYTES_FOR_MESSAGE_CODE, MAX_MESSAGE_LEN, REPEATED_MESSAGES_AMOUNT,
+    BYTEORDER_FOR_MESSAGE_CODE, BYTES_FOR_MESSAGE_CODE, MAX_MESSAGE_LEN
 )
-from udp_communication.messages.codes import CODES_TO_MESSAGES, MESSAGES_TO_CODES, MESSAGE_TO_APPROVAL
-import settings
-
-
-def is_required_approval_message(message, approval_message):
-    required_message_type = MESSAGE_TO_APPROVAL[type(message)]
-    return isinstance(approval_message, required_message_type)
+from udp_communication.messages.codes import (
+    CODES_TO_MESSAGES, MESSAGES_TO_CODES,
+    MESSAGE_TO_ID_APPROVAL, MESSAGE_TO_MESSAGE_APPROVAL
+)
 
 
 def encode_address(host, port):
@@ -26,18 +27,38 @@ def decode_address(encoded_address):
 
 
 class UDPCommunicator:
-    def __init__(self, socket):
-        self.socket = socket
+    def __init__(self, host, read_port=0):
+        read_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        read_sock.settimeout(constants.SOCKET_TIMEOUT)
+        write_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        read_sock.bind((host, read_port))
+        write_sock.bind((host, 0))
+        self.read_socket = read_sock
+        self.write_socket = write_sock
         self.message_id = 1
-        self.message_to_read = None
+        self.last_approval_message_id = None
 
-    def send_approval_message_on(self, message):
-        pass
+    def is_required_approval_message(self, message, approval_message):
+        if type(message) in MESSAGE_TO_ID_APPROVAL:
+            return approval_message.message_id > self.last_approval_message_id
+        required_message_type = MESSAGE_TO_MESSAGE_APPROVAL[type(message)]
+        return isinstance(approval_message, required_message_type)
 
     def read(self):
-        if self.message_to_read:
-            return self.message_to_read
-        encoded_message = self.socket.recv(MAX_MESSAGE_LEN)
+        address_to_messages = defaultdict(dict)
+        for _ in range(constants.MESSAGES_PER_READ):
+            try:
+                message, address = self._read()
+            except timeout:
+                break
+            code = MESSAGES_TO_CODES[type(message)]
+            previous_message = address_to_messages[address].get(code)
+            if not previous_message or message.message_id > previous_message.message_id:
+                address_to_messages[address][code] = message
+        return {address: tuple(messages.values()) for address, messages in address_to_messages.items()}
+
+    def _read(self):
+        encoded_message = self.read_socket.recv(MAX_MESSAGE_LEN)
         sender_address_bytes = encoded_message[:6]
         message_code_bytes = encoded_message[6:6+BYTES_FOR_MESSAGE_CODE]
         message_bytes = encoded_message[6+BYTES_FOR_MESSAGE_CODE:]
@@ -56,25 +77,24 @@ class UDPCommunicator:
     def send_until_approval(self, message, host, port):
         # TODO: deal with lost messages
         # TODO: handle cases when not responding for too long
-        approved = False
-        address = None
-        while not approved:
-            for _ in range(REPEATED_MESSAGES_AMOUNT):
-                self._send(message, host, port)
-            while address != (host, port):
-                approval_message, address = self.read()
-            address = None
-            if is_required_approval_message(message, approval_message):
-                approved = True
-        self.message_id += 1
+        while True:
+            self._send(message, host, port)
+            try:
+                approval_message, address = self._read()
+            except timeout:
+                continue
+            if address == (host, port) and self.is_required_approval_message(message, approval_message):
+                self.message_id += 1
+                self.last_approval_message_id = approval_message.message_id
+                return approval_message
 
     def _send(self, message, host, port):
         message.message_id = self.message_id
-        sender_host, sender_port = self.socket.getsockname()
+        sender_host, sender_port = self.read_socket.getsockname()
         sender_address_bytes = encode_address(sender_host, sender_port)
         message_code = MESSAGES_TO_CODES[type(message)]
         message_code_bytes = message_code.to_bytes(BYTES_FOR_MESSAGE_CODE, BYTEORDER_FOR_MESSAGE_CODE)
         message_bytes = message.SerializeToString()
         # TODO: handle if message len is too long
         encoded_message = sender_address_bytes + message_code_bytes + message_bytes
-        self.socket.sendto(encoded_message, (host, port))
+        self.write_socket.sendto(encoded_message, (host, port))
