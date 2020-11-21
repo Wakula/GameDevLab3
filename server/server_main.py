@@ -1,4 +1,5 @@
 import settings
+from itertools import chain
 import model.udp_helper as udp_helper
 from model.constants import Directions
 from server.server_game import ServerGame
@@ -48,7 +49,7 @@ class Server:
             if not address_to_messages:
                 continue
             for address, messages in address_to_messages.items():
-                for message in messages:
+                for message in chain(*messages.values()):
                     if any(map(lambda c: c.player_id == message.player_id, self.clients)):
                         continue
                     if isinstance(message, messages_pb2.Connect):
@@ -70,7 +71,7 @@ class Server:
                 if address_to_messages:
                     for address, messages in address_to_messages.items():
                         host, port = address
-                        for message in messages:
+                        for message in chain(*messages.values()):
                             self.handle_client_message(message, host, port)
 
                 self.send_player_states()

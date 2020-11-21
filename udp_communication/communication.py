@@ -2,6 +2,7 @@ from collections import defaultdict
 from udp_communication import constants
 from socket import timeout
 import socket
+import settings
 from udp_communication.constants import (
     BYTEORDER_FOR_MESSAGE_CODE, BYTES_FOR_MESSAGE_CODE, MAX_MESSAGE_LEN
 )
@@ -27,7 +28,7 @@ def decode_address(encoded_address):
 
 
 class UDPCommunicator:
-    def __init__(self, host, read_port=0):
+    def __init__(self, host, read_port=0, is_client=False):
         read_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         read_sock.settimeout(constants.SOCKET_TIMEOUT)
         write_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -36,6 +37,7 @@ class UDPCommunicator:
         self.read_socket = read_sock
         self.write_socket = write_sock
         self.message_id = 1
+        self.is_client = is_client
         self.last_approval_message_id = None
 
     def is_required_approval_message(self, message, approval_message):
@@ -47,15 +49,20 @@ class UDPCommunicator:
     def read(self):
         address_to_messages = defaultdict(dict)
         for _ in range(constants.MESSAGES_PER_READ):
+            if not self.is_client and len(address_to_messages) >= settings.CLIENTS_AMOUNT:
+                break
             try:
                 message, address = self._read()
             except timeout:
                 break
-            code = MESSAGES_TO_CODES[type(message)]
-            previous_message = address_to_messages[address].get(code)
-            if not previous_message or message.message_id > previous_message.message_id:
-                address_to_messages[address][code] = message
-        return {address: tuple(messages.values()) for address, messages in address_to_messages.items()}
+            message_type = type(message)
+            messages = address_to_messages[address].get(message_type, {})
+            messages[message.message_id] = message
+            address_to_messages[address][message_type] = messages
+        return {
+            address: {message_type: tuple(messages.values()) for message_type, messages in type_to_messages.items()}
+            for address, type_to_messages in address_to_messages.items()
+        }
 
     def _read(self):
         encoded_message = self.read_socket.recv(MAX_MESSAGE_LEN)

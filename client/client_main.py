@@ -1,3 +1,4 @@
+from itertools import chain
 import settings
 import model.udp_helper as udp_helper
 from client.client_game import ClientGame
@@ -8,7 +9,7 @@ from udp_communication.communication import UDPCommunicator
 
 class Client:
     def __init__(self, player_id):
-        self.udp_communicator = UDPCommunicator('127.0.0.1')
+        self.udp_communicator = UDPCommunicator('127.0.0.1', is_client=True)
         self.player_id = player_id
 
     def run(self):
@@ -32,7 +33,7 @@ class Client:
         while not address_to_messages:
             address_to_messages = self.udp_communicator.read()
         address, messages = address_to_messages.popitem()
-        for message in messages:
+        for message in chain(*messages.values()):
             if isinstance(message, messages_pb2.GameStarted) and address == (settings.SERVER_HOST, settings.SERVER_PORT):
                 game_started_ok = messages_pb2.GameStartedOk()
                 game_started_ok.player_id = self.player_id
@@ -111,5 +112,5 @@ class Client:
         if not address_to_messages:
             return
         address, messages = address_to_messages.popitem()
-        for message in messages:
+        for message in chain(*messages.values()):
             self.handle_message(message)
