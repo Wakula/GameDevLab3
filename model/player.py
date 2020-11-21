@@ -21,7 +21,7 @@ class AbstractPlayer(GameObject):
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
         
     def shoot(self):
-        if self.is_on_recharge():
+        if self.is_on_recharge() or self.player_id in self.game.dead_players:
             return
         self.previous_shooting_time = pygame.time.get_ticks()
         projectile = Projectile(
