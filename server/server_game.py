@@ -8,6 +8,7 @@ import model.udp_helper as udp_helper
 
 
 class ServerGame(AbstractGame):
+    
     def __init__(self):
         super().__init__()
 

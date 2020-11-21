@@ -12,10 +12,11 @@ class AbstractPlayer(GameObject):
         self.radius = radius
         self.diameter = 2 * radius
         self.direction = Directions.UP
-        self.projectile_speed = settings.PROJECTILE_SPEED
         self.game = game
         self.previous_shooting_time = None
         self.health = settings.MAX_HEALTH
+        self.projectile_speed = settings.PROJECTILE_SPEED
+        self.projectile_damage = settings.PROJECTILE_BASE_DAMAGE
         self.player_id = player_id
         self.shot_projectile = None
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
@@ -27,9 +28,9 @@ class AbstractPlayer(GameObject):
         projectile = Projectile(
             *self.bounds.center,
             settings.PROJECTILE_RADIUS, settings.PROJECTILE_COLOR,
-            settings.PROJECTILE_SPEED,
+            self.projectile_speed,
             self,
-            settings.PROJECTILE_BASE_DAMAGE
+            self.projectile_damage,
         )
         self.game.projectiles[projectile.id] = projectile
         self.shot_projectile = projectile
