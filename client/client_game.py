@@ -4,6 +4,7 @@ from model.game import AbstractGame
 import pygame
 import settings
 
+
 class ClientGame(AbstractGame):
     def __init__(self):
         super().__init__()
@@ -12,11 +13,6 @@ class ClientGame(AbstractGame):
         self.key_up_handlers = defaultdict(list)
         pygame.font.init()
         self.game_font = pygame.font.SysFont(settings.FONT, settings.FONT_SIZE)
-        # TODO: this should be changed for multiple players
-        #x_spawn_position = int((settings.SCREEN_WIDTH - settings.PLAYER_RADIUS) / 2)
-        #y_spawn_position = settings.SCREEN_HEIGHT - settings.PLAYER_RADIUS * 2
-        #self.init_client_player(x_spawn_position, y_spawn_position)
-        #self.init_ai_opponent(x_spawn_position, y_spawn_position)
 
     def init_client_player(self, x_spawn, y_spawn, player_dir, player_id):
         # TODO: x_... and y_... spawn position should be reworked
@@ -113,7 +109,7 @@ class ClientGame(AbstractGame):
         center_x = settings.SCREEN_WIDTH / 2 - rect.width / 2
         center_y = settings.SCREEN_HEIGHT / 2 - rect.height / 2
         self.surface.blit(textsurface, (center_x, center_y))
-        
+
     def clean_screen(self):
         self.surface.fill(settings.BACKGROUND_COLOR)
 
@@ -125,4 +121,3 @@ class ClientGame(AbstractGame):
 
         pygame.display.update()
         self.clock.tick(settings.FRAME_RATE)
-    

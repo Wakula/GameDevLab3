@@ -1,6 +1,4 @@
-import socket
 import settings
-import threading
 import time
 import model.udp_helper as udp_helper
 from model.constants import Directions
@@ -14,11 +12,14 @@ class Server:
         self.udp_communicator = UDPCommunicator(settings.SERVER_HOST, settings.SERVER_PORT)
         self.game = ServerGame()
         self.clients = []
+        self.dead_client_ids = {}
 
     def time(self):
         return time.time()
 
     def handle_client_message(self, message, host, port):
+        if message.player_id in self.game.dead_players:
+            return
         if isinstance(message, messages_pb2.GameStartedOk):
             game_state = self.game.create_game_state()
             self.udp_communicator.send(game_state, host, port)
@@ -77,6 +78,13 @@ class Server:
             self.game.run()
 
     def send_player_states(self):
+        for dead_player_id in self.game.dead_players:
+            if dead_player_id not in self.dead_client_ids:
+                continue
+            for client in self.clients:
+                player_is_dead = udp_helper.create_dead_player_state(dead_player_id)
+                self.udp_communicator.send_until_approval(player_is_dead, client.host, client.port)
+
         for player in self.game.players.values():
             player_state = udp_helper.create_player_state(player)
             for client in self.clients:

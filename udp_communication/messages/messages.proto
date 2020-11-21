@@ -28,6 +28,7 @@ message PlayerState {
   optional int32 y = 4;
   optional string direction = 5;
   optional int32 speed = 6;
+  optional int32 health = 7;
 }
 
 message ShootEvent {
@@ -51,4 +52,13 @@ message GameState {
   optional int32 message_id = 1;
   repeated PlayerState players = 2;
   repeated ShootEvent projectiles = 3;
+}
+
+message PlayerIsDead {
+  optional int32 message_id = 1;
+  optional int32 player_id = 2;
+}
+
+message PlayerIsDeadOk {
+  optional int32 message_id = 1;
 }

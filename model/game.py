@@ -10,6 +10,7 @@ class AbstractGame:
         self.players = {}
         self.projectiles = {}
         self.clock = pygame.time.Clock()
+        self.dead_players = set()
 
     @property
     def objects(self):
@@ -43,6 +44,7 @@ class AbstractGame:
     def on_player_hit(self, projectile, player, dead_players):
         projectile.hit(player)
         if player.health <= 0:
+            self.dead_players.add(player.player_id)
             dead_players.append(player)
 
     def remove_objects(self, collided_projectiles, dead_players):

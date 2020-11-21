@@ -1,7 +1,4 @@
-import socket
 import settings
-import pygame
-import time
 import model.udp_helper as udp_helper
 from client.client_game import ClientGame
 from model.constants import Directions
@@ -40,6 +37,9 @@ class Client:
                 self.init_game(game_state)
 
     def send_actions(self):
+        if self.player_id in self.game.dead_players:
+            #TODO: return to main menu
+            return
         player = self.game.players[self.player_id]
         if player:
             self.send_shoot_event(player)
@@ -66,6 +66,8 @@ class Client:
     def handle_message(self, message):
         if isinstance(message, messages_pb2.PlayerState):
             player_id = message.player_id
+            if player_id in self.game.dead_players:
+                return
             if not self.game.player_exists(player_id):
                 if self.player_id == player_id:
                     self.game.init_client_player(message.x, message.y, Directions(message.direction), message.player_id)
@@ -75,13 +77,24 @@ class Client:
 
             if message.player_id != self.player_id:
                 self.game.update_player_position(message.player_id, message.x, message.y, Directions(message.direction))
-        
+                self.game.update_player_health(player_id, message.health)
+
         if isinstance(message, messages_pb2.ShootEvent):
+            if message.player_id in self.game.dead_players:
+                return
             if not (message.player_id, message.projectile_id) in self.game.projectiles.keys():
                 owner = self.game.players[message.player_id]
                 projectile = udp_helper.create_projectile(message, owner)
                 self.game.projectiles[projectile.id] = projectile
                 self.udp_communicator.send_until_approval(messages_pb2.ShootOk(), settings.SERVER_HOST, settings.SERVER_PORT)
+
+        if isinstance(message, messages_pb2.PlayerIsDead):
+            if message.player_id not in self.game.dead_players:
+                self.game.dead_players[message.player_id] = self.game.players[message.player_id]
+                del self.game.players[message.player_id]
+            self.udp_communicator.send_until_approval(
+                messages_pb2.PlayerIsDeadOk(), settings.SERVER_HOST, settings.SERVER_PORT
+            )
 
     def read_socket(self):
         address_to_messages = self.udp_communicator.read()

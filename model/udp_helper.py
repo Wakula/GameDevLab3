@@ -4,12 +4,19 @@ from model import constants
 import settings
 
 
+def create_dead_player_state(player_id):
+    player_state = messages_pb2.PlayerIsDead()
+    player_state.player_id = player_id
+    return player_state
+
+
 def create_player_state(player):
     player_state = messages_pb2.PlayerState()
     player_state.player_id = player.player_id
     player_state.x = player.bounds.x
     player_state.y = player.bounds.y
     player_state.direction = player.direction.value
+    player_state.health = player.health
     return player_state
 
 

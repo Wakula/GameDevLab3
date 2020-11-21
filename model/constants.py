@@ -1,5 +1,6 @@
 import enum
 
+
 class Directions(enum.Enum):
     UP = 'U'
     DOWN = 'D'

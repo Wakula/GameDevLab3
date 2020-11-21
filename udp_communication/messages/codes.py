@@ -8,6 +8,8 @@ CODES_TO_MESSAGES = (
     messages_pb2.GameState,
     messages_pb2.ShootEvent,
     messages_pb2.ShootOk,
+    messages_pb2.PlayerIsDead,
+    messages_pb2.PlayerIsDeadOk,
 )
 
 MESSAGES_TO_CODES = {
@@ -18,9 +20,11 @@ MESSAGE_TO_MESSAGE_APPROVAL = {
     messages_pb2.Connect: messages_pb2.GameStarted,
     messages_pb2.GameStarted: messages_pb2.GameStartedOk,
     messages_pb2.GameStartedOk: messages_pb2.GameState,
-    messages_pb2.ShootEvent: messages_pb2.ShootOk
+    messages_pb2.ShootEvent: messages_pb2.ShootOk,
+    messages_pb2.PlayerIsDead: messages_pb2.PlayerIsDeadOk,
 }
 
 MESSAGE_TO_ID_APPROVAL = (
     messages_pb2.ShootOk,
+    messages_pb2.PlayerIsDeadOk,
 )
