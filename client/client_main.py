@@ -77,9 +77,9 @@ class Client:
 
             if message.player_id != self.player_id:
                 self.game.update_player_position(message.player_id, message.x, message.y, Directions(message.direction))
-                self.game.update_player_health(player_id, message.health)
+            self.game.update_player_health(player_id, message.health)
 
-        if isinstance(message, messages_pb2.ShootEvent):
+        elif isinstance(message, messages_pb2.ShootEvent):
             if message.player_id in self.game.dead_players:
                 return
             if not (message.player_id, message.projectile_id) in self.game.projectiles.keys():
@@ -88,12 +88,19 @@ class Client:
                 self.game.projectiles[projectile.id] = projectile
                 self.udp_communicator.send_until_approval(messages_pb2.ShootOk(), settings.SERVER_HOST, settings.SERVER_PORT)
 
-        if isinstance(message, messages_pb2.PlayerIsDead):
+        elif isinstance(message, messages_pb2.PlayerIsDead):
             if message.player_id not in self.game.dead_players:
                 self.game.dead_players[message.player_id] = self.game.players[message.player_id]
                 del self.game.players[message.player_id]
             self.udp_communicator.send_until_approval(
                 messages_pb2.PlayerIsDeadOk(), settings.SERVER_HOST, settings.SERVER_PORT
+            )
+
+        elif isinstance(message, messages_pb2.Boost):
+            boost = udp_helper.create_boost(message)
+            self.game.boosts_on_field.append(boost)
+            self.udp_communicator.send_until_approval(
+                messages_pb2.BoostOk(), settings.SERVER_HOST, settings.SERVER_PORT
             )
 
     def read_socket(self):

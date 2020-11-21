@@ -1,5 +1,4 @@
 import settings
-import time
 import model.udp_helper as udp_helper
 from model.constants import Directions
 from server.server_game import ServerGame
@@ -14,9 +13,6 @@ class Server:
         self.clients = []
         self.dead_client_ids = {}
 
-    def time(self):
-        return time.time()
-
     def handle_client_message(self, message, host, port):
         if message.player_id in self.game.dead_players:
             return
@@ -30,9 +26,8 @@ class Server:
             updated_player = self.game.players[player_id]
             updated_player_state = udp_helper.create_player_state(updated_player)
             for client in self.clients:
-                if client.player_id != player_id:
-                    self.udp_communicator.send(updated_player_state, client.host, client.port)
-                    
+                self.udp_communicator.send(updated_player_state, client.host, client.port)
+
         elif isinstance(message, messages_pb2.ShootEvent):
             player_id = message.player_id
             owner = self.game.players[player_id]
@@ -84,6 +79,14 @@ class Server:
             for client in self.clients:
                 player_is_dead = udp_helper.create_dead_player_state(dead_player_id)
                 self.udp_communicator.send_until_approval(player_is_dead, client.host, client.port)
+
+        if self.game.spawned_boost:
+            boost_message = udp_helper.create_boost_message(self.game.spawned_boost)
+            for client in self.clients:
+                if client.player_id in self.dead_client_ids:
+                    continue
+                self.udp_communicator.send_until_approval(boost_message, client.host, client.port)
+            self.game.spawned_boost = None
 
         for player in self.game.players.values():
             player_state = udp_helper.create_player_state(player)

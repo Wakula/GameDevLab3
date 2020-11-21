@@ -1,7 +1,28 @@
 from udp_communication.messages import messages_pb2
 from model.projectile import Projectile
+from model.boost_mappings import BOOST_CLS_TO_BOOST_TYPE, BOOST_TYPE_TO_BOOST_CLS
 from model import constants
 import settings
+
+
+def create_boost(boost_message):
+    boost_cls = BOOST_TYPE_TO_BOOST_CLS[boost_message.type]
+    return boost_cls(
+        boost_id=boost_message.boost_id,
+        x=boost_message.x,
+        y=boost_message.y,
+        w=settings.BOOST_WIDTH,
+        h=settings.BOOST_HEIGHT,
+    )
+
+
+def create_boost_message(boost):
+    boost_message = messages_pb2.Boost()
+    boost_message.type = BOOST_CLS_TO_BOOST_TYPE[type(boost)]
+    boost_message.boost_id = boost.boost_id
+    boost_message.x = boost.bounds.x
+    boost_message.y = boost.bounds.y
+    return boost_message
 
 
 def create_dead_player_state(player_id):

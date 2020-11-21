@@ -1,17 +1,9 @@
 import random
 import pygame
 import settings
-from model import boosts
 
 
 class AbstractGame:
-    BOOSTS = (
-        boosts.HealthBoost,
-        boosts.ProjectileSpeedBoost,
-        boosts.PlayerSpeedBoost,
-        boosts.PlayerDamageBoost,
-    )
-
     def __init__(self):
         pygame.init()
         self.game_over = False
@@ -74,22 +66,6 @@ class AbstractGame:
                 undone_boosts.append(boost)
         for boost in undone_boosts:
             self.attached_boosts.remove(boost)
-
-    def spawn_boosts(self):
-        if len(self.boosts_on_field) == settings.MAX_BOOSTS_ON_FIELD:
-            return
-        # TODO: rework random for boost geneartion
-        if random.randint(0, 100):
-            return
-        boost_cls = random.choice(self.BOOSTS)
-        boost = boost_cls(
-            x=random.randint(0, settings.SCREEN_WIDTH-settings.BOOST_WIDTH),
-            y=random.randint(0, settings.SCREEN_HEIGHT-settings.BOOST_HEIGHT),
-            w=settings.BOOST_HEIGHT,
-            h=settings.BOOST_WIDTH,
-        )
-        self.boosts_on_field.append(boost)
-
 
     def on_player_hit(self, projectile, player, dead_players):
         projectile.hit(player)

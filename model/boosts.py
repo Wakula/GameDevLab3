@@ -5,12 +5,10 @@ import pygame
 
 class AbstractBoost(GameObject):
     COLOR = None
-    boost_count = 0
 
-    def __init__(self, x, y, w, h):
+    def __init__(self, boost_id, x, y, w, h):
         self.player = None
-        self.boost_id = AbstractBoost.boost_count
-        AbstractBoost.boost_count += 1
+        self.boost_id = boost_id
         super().__init__(x, y, w, h)
 
     def draw(self, surface):
@@ -38,6 +36,8 @@ class HealthBoost(AbstractBoost):
         updated_health = self.player.health + settings.HEALTH_BOOST_EFFECT
         if updated_health > settings.MAX_HEALTH:
             self.player.health = settings.MAX_HEALTH
+        else:
+            self.player.health = updated_health
 
 
 class AbstractMultiplierBoostWithDuration(AbstractBoost):
@@ -45,9 +45,9 @@ class AbstractMultiplierBoostWithDuration(AbstractBoost):
     VALUE_TO_BOOST = None
     BOOST_MULTIPLIER = None
 
-    def __init__(self, x, y, w, h):
+    def __init__(self, boost_id, x, y, w, h):
         self.effect_started = None
-        super().__init__(x, y, w, h)
+        super().__init__(boost_id, x, y, w, h)
 
     def get_boosted_value(self):
         return self.VALUE_TO_BOOST * self.BOOST_MULTIPLIER

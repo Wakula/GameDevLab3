@@ -32,19 +32,6 @@ class ClientGame(AbstractGame):
 
         self.players[player_id] = player
 
-    def init_ai_opponent(self, x_spawn, y_spawn):
-        ai_id = "ai"
-        opponent = Opponent(
-            x_spawn,
-            y_spawn,
-            settings.PLAYER_RADIUS,
-            settings.OPPONENT_COLOR,
-            settings.PLAYER_SPEED,
-            self,
-            ai_id
-        )
-        self.players[ai_id] = player
-    
     def init_network_opponent(self, x_spawn, y_spawn, player_dir, player_id):
         opponent = NetworkOpponent(
             x_spawn,
@@ -64,7 +51,6 @@ class ClientGame(AbstractGame):
         self.handle_projectile_collisions()
         self.handle_boosts_collisions()
         self.try_undo_boosts_effects()
-        self.spawn_boosts()
 
     def draw(self):
         for game_object in self.objects:

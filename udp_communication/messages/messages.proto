@@ -80,6 +80,7 @@ message Boost {
 
 message BoostOk {
   optional int32 message_id = 1;
+  optional int32 player_id = 2;
 }
 
 message BoostPickUp {
