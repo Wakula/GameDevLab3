@@ -47,7 +47,7 @@ class AbstractGame:
             if projectile not in collided_projectiles and projectile.is_out_of_bounds():
                 collided_projectiles.append(projectile)
         for projectile in collided_projectiles:
-            del self.projectiles[projectile.id]
+            self.projectiles.pop(projectile.id, None)
         for player in dead_players:
             del self.players[player.player_id]
 

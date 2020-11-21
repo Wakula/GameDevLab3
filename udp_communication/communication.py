@@ -43,9 +43,9 @@ class UDPCommunicator:
 
     def clean_sockets(self):
         try:
-            while self.read_sock.recv(1024): pass
-            while self.write_sock.recv(1024): pass
-        except:
+            while self.read_socket.recv(1024): pass
+            while self.write_socket.recv(1024): pass
+        except timeout:
             pass
 
 

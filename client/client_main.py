@@ -16,7 +16,7 @@ class Client:
     def run(self):
         while True:
             self.game = ClientGame()
-            self.udp_communicator = UDPCommunicator('127.0.0.1', is_client=True)
+            self.udp_communicator.clean_sockets()
             self.is_alive = True
             self.game.show_start_screen()
             self.game.show_connecting()
