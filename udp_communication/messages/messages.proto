@@ -41,6 +41,12 @@ message ShootEvent {
   optional int32 player_id = 8;
 }
 
+message GotShotEvent {
+  optional int32 message_id = 1;
+  optional int32 projectile_id = 2;
+  optional int32 player_id = 8;
+}
+
 message GameState {
   optional int32 message_id = 1;
   repeated PlayerState players = 2;

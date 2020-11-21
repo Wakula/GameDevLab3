@@ -3,15 +3,12 @@ from udp_communication import constants
 from socket import timeout
 import socket
 from udp_communication.constants import (
-    BYTEORDER_FOR_MESSAGE_CODE, BYTES_FOR_MESSAGE_CODE, MAX_MESSAGE_LEN, REPEATED_MESSAGES_AMOUNT,
+    BYTEORDER_FOR_MESSAGE_CODE, BYTES_FOR_MESSAGE_CODE, MAX_MESSAGE_LEN
 )
-from udp_communication.messages.codes import CODES_TO_MESSAGES, MESSAGES_TO_CODES, MESSAGE_TO_APPROVAL
-import settings
-
-
-def is_required_approval_message(message, approval_message):
-    required_message_type = MESSAGE_TO_APPROVAL[type(message)]
-    return isinstance(approval_message, required_message_type)
+from udp_communication.messages.codes import (
+    CODES_TO_MESSAGES, MESSAGES_TO_CODES,
+    MESSAGE_TO_ID_APPROVAL, MESSAGE_TO_MESSAGE_APPROVAL
+)
 
 
 def encode_address(host, port):
@@ -39,10 +36,13 @@ class UDPCommunicator:
         self.read_socket = read_sock
         self.write_socket = write_sock
         self.message_id = 1
-        self.message_to_read = None
+        self.last_approval_message_id = None
 
-    def send_approval_message_on(self, message):
-        pass
+    def is_required_approval_message(self, message, approval_message):
+        if type(message) in MESSAGE_TO_ID_APPROVAL:
+            return approval_message.message_id > self.last_approval_message_id
+        required_message_type = MESSAGE_TO_MESSAGE_APPROVAL[type(message)]
+        return isinstance(approval_message, required_message_type)
 
     def read(self):
         address_to_messages = defaultdict(dict)
@@ -58,8 +58,6 @@ class UDPCommunicator:
         return {address: tuple(messages.values()) for address, messages in address_to_messages.items()}
 
     def _read(self):
-        if self.message_to_read:
-            return self.message_to_read
         encoded_message = self.read_socket.recv(MAX_MESSAGE_LEN)
         sender_address_bytes = encoded_message[:6]
         message_code_bytes = encoded_message[6:6+BYTES_FOR_MESSAGE_CODE]
@@ -79,18 +77,15 @@ class UDPCommunicator:
     def send_until_approval(self, message, host, port):
         # TODO: deal with lost messages
         # TODO: handle cases when not responding for too long
-        address = None
         while True:
-            for _ in range(REPEATED_MESSAGES_AMOUNT):
-                self._send(message, host, port)
-            while address != (host, port):
-                try:
-                    approval_message, address = self._read()
-                except timeout:
-                    continue
-            address = None
-            if is_required_approval_message(message, approval_message):
+            self._send(message, host, port)
+            try:
+                approval_message, address = self._read()
+            except timeout:
+                continue
+            if address == (host, port) and self.is_required_approval_message(message, approval_message):
                 self.message_id += 1
+                self.last_approval_message_id = approval_message.message_id
                 return approval_message
 
     def _send(self, message, host, port):

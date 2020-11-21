@@ -17,6 +17,7 @@ class AbstractPlayer(GameObject):
         self.previous_shooting_time = None
         self.health = settings.MAX_HEALTH
         self.player_id = player_id
+        self.shot_projectile = None
         super().__init__(x-radius, y-radius, self.diameter, self.diameter)
         
     def shoot(self):
@@ -31,6 +32,7 @@ class AbstractPlayer(GameObject):
             settings.PROJECTILE_BASE_DAMAGE
         )
         self.game.projectiles.append(projectile)
+        self.shot_projectile = projectile
 
     def is_on_recharge(self):
         if (
