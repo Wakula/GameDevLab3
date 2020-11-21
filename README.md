@@ -1,18 +1,18 @@
 # GameDevLab3
 
-test
+Run server:
+
 ```
-python run.py
+python run_server.py
 ```
-Controls - WASD
-    '''Connect''' # Send from CLIENT until receive 1: GameStarted
-    '''GameStarted,''' # Send from SERVER until receive 2: GameStartedOK
-    '''GameStartedOK,''' # Send from CLIENT until receive 3: GameState
-    # Start game and start movement
-    '''GameState,''' # Send from SERVER until ?
-    '''PlayerState,''' # Send from CLIENT until ?
-    # SHOOT
-    '''ShootEvent,''' # Send from CLIENT/SERVER until receive 6: ShootOK
-    '''ShootOK''' # Send from SERVER/CLIENT until receive package with greater id
-    '''GetShot''' # Send from SERVER
-    '''GetShotOK,''' # Send from CLIENT
+
+Run client:
+(client_id is int)
+
+```
+python run_client.py client_id
+```
+
+Controls: WASD
+Shoot: Space
+Boosts: Player speed (GREEN), Projectile speed (BLUE), Health points (RED), Projectile damage (AQUA)
