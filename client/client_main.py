@@ -17,6 +17,7 @@ class Client:
 
     def run(self):
         self.game.show_start_screen()
+        self.game.show_connecting()
         self.connect_to_server()
         while not self.game.game_over:
             self.read_socket()
