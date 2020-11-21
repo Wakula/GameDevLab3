@@ -36,3 +36,4 @@ FONT = 'Comic Sans MS'
 FONT_SIZE = 30
 FONT_COLOR = (255, 255, 255)
 START_SCREEN_TEXT = 'Press [Space] to start new game'
+CONNECTING_TEXT = 'Connecting...'

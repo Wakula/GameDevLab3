@@ -95,17 +95,29 @@ class ClientGame(AbstractGame):
         return False
 
     def show_start_screen(self):
+        self.clean_screen()
+        self.render_text(settings.START_SCREEN_TEXT)
+        pygame.display.update()
         while not self.handle_start():
-            textsurface = self.game_font.render(settings.START_SCREEN_TEXT, False, settings.FONT_COLOR)
-            img = self.game_font.render(settings.FONT, True, settings.FONT_COLOR)
-            rect = img.get_rect()
-            center_x = settings.SCREEN_WIDTH / 2 - rect.width
-            center_y = settings.SCREEN_HEIGHT / 2 - rect.height / 2
-            self.surface.blit(textsurface, (center_x, center_y))
-            pygame.display.update()
+            pass
+    
+    def show_connecting(self):
+        self.clean_screen()
+        self.render_text(settings.CONNECTING_TEXT)
+        pygame.display.update()
+
+    def render_text(self, text):
+        textsurface = self.game_font.render(text, False, settings.FONT_COLOR)
+        rect = textsurface.get_rect()
+        center_x = settings.SCREEN_WIDTH / 2 - rect.width / 2
+        center_y = settings.SCREEN_HEIGHT / 2 - rect.height / 2
+        self.surface.blit(textsurface, (center_x, center_y))
+        
+    def clean_screen(self):
+        self.surface.fill(settings.BACKGROUND_COLOR)
 
     def run(self):
-        self.surface.fill(settings.BACKGROUND_COLOR)
+        self.clean_screen()
         self.handle_events()
         self.update()
         self.draw()
