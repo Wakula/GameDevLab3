@@ -7,32 +7,30 @@ class AbstractGame:
     def __init__(self):
         pygame.init()
         self.game_over = False
-        self.players = []
+        self.players = {}
         self.projectiles = {}
         self.clock = pygame.time.Clock()
 
     @property
     def objects(self):
-        return (*self.players, *self.projectiles.values())
+        return (*self.players.values(), *self.projectiles.values())
 
     def update_player_position(self, player_id, new_x, new_y, new_dir):
-        for player in self.players:
-            if player.player_id == player_id:
-                dx = new_x - player.bounds.x
-                dy = new_y - player.bounds.y
-                player.move(dx, dy)
-                player.direction = new_dir
+        player = self.players[player_id]
+        dx = new_x - player.bounds.x
+        dy = new_y - player.bounds.y
+        player.move(dx, dy)
+        player.direction = new_dir
     
     def update_player_health(self, player_id, new_health):
-        for player in self.players:
-            if player.player_id == player_id:
-                player.health = new_health
+        player = self.players[player_id]
+        player.health = new_health
 
     def handle_projectile_collisions(self):
         collided_projectiles = []
         dead_players = []
         for projectile in self.projectiles.values():
-            for player in self.players:
+            for player in self.players.values():
                 if player is projectile.owner:
                     continue
                 if player.bounds.colliderect(projectile.bounds):
@@ -51,15 +49,10 @@ class AbstractGame:
         for projectile in collided_projectiles:
             del self.projectiles[projectile.id]
         for player in dead_players:
-            self.players.remove(player)
+            del self.players[player.player_id]
 
     def get_ticks(self):
         return pygame.time.get_ticks()
 
     def player_exists(self, player_id):
-        return any(map(lambda p: p.player_id == player_id, self.players))
-    
-    def get_player(self, player_id):
-        for player in self.players:
-            if player.player_id == player_id:
-                return player
+        return player_id in self.players.keys()

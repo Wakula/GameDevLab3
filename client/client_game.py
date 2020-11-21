@@ -34,9 +34,10 @@ class ClientGame(AbstractGame):
             self.key_down_handlers[key].append(player.handle_down)
             self.key_up_handlers[key].append(player.handle_up)
 
-        self.players.append(player)
+        self.players[player_id] = player
 
     def init_ai_opponent(self, x_spawn, y_spawn):
+        ai_id = "ai"
         opponent = Opponent(
             x_spawn,
             y_spawn,
@@ -44,9 +45,9 @@ class ClientGame(AbstractGame):
             settings.OPPONENT_COLOR,
             settings.PLAYER_SPEED,
             self,
-            "id2"
+            ai_id
         )
-        self.players.append(opponent)
+        self.players[ai_id] = player
     
     def init_network_opponent(self, x_spawn, y_spawn, player_dir, player_id):
         opponent = NetworkOpponent(
@@ -59,7 +60,7 @@ class ClientGame(AbstractGame):
             player_id
         )
         opponent.direction = player_dir
-        self.players.append(opponent)
+        self.players[player_id] = opponent
 
     def update(self):
         for game_object in self.objects:

@@ -23,7 +23,7 @@ class ServerGame(AbstractGame):
                 self,
                 player_id
             )
-            self.players.append(player)
+            self.players[player_id] = player
 
     def update(self):
         for game_object in self.objects:
@@ -36,7 +36,7 @@ class ServerGame(AbstractGame):
 
     def create_game_state(self):
         game_state = GameState()
-        for player in self.players:
+        for player in self.players.values():
             player_state = udp_helper.create_player_state(player)
             game_state.players.append(player_state)
         return game_state

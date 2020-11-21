@@ -26,14 +26,15 @@ class Server:
         elif isinstance(message, messages_pb2.PlayerState):
             player_id = message.player_id
             self.game.update_player_position(player_id, message.x, message.y, Directions(message.direction))
-            updated_player = self.game.get_player(player_id)
+            updated_player = self.game.players[player_id]
             updated_player_state = udp_helper.create_player_state(updated_player)
             for client in self.clients:
                 if client.player_id != player_id:
                     self.udp_communicator.send(updated_player_state, client.host, client.port)
+                    
         elif isinstance(message, messages_pb2.ShootEvent):
             player_id = message.player_id
-            owner = self.game.get_player(player_id)
+            owner = self.game.players[player_id]
             projectile = udp_helper.create_projectile(message, owner)
             self.game.projectiles[projectile.id] = projectile
             for client in self.clients:
@@ -76,7 +77,7 @@ class Server:
             self.game.run()
 
     def send_player_states(self):
-        for player in self.game.players:
+        for player in self.game.players.values():
             player_state = udp_helper.create_player_state(player)
             for client in self.clients:
                 if client.player_id != player_state.player_id:

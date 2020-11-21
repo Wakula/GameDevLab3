@@ -40,7 +40,7 @@ class Client:
                 self.init_game(game_state)
 
     def send_actions(self):
-        player = self.game.get_player(self.player_id)
+        player = self.game.players[self.player_id]
         if player:
             self.send_shoot_event(player)
             self.send_state(player)
@@ -78,7 +78,7 @@ class Client:
         
         if isinstance(message, messages_pb2.ShootEvent):
             if not (message.player_id, message.projectile_id) in self.game.projectiles.keys():
-                owner = self.game.get_player(message.player_id)
+                owner = self.game.players[message.player_id]
                 projectile = udp_helper.create_projectile(message, owner)
                 self.game.projectiles[projectile.id] = projectile
                 self.udp_communicator.send_until_approval(messages_pb2.ShootOk(), settings.SERVER_HOST, settings.SERVER_PORT)
