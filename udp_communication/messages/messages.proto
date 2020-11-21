@@ -5,18 +5,17 @@ message Connect {
   optional int32 message_id = 1;
   optional int32 player_id = 2;
 }
+
 message GameStarted {
   optional int32 message_id = 1;
 }
+
 message GameStartedOk {
   optional int32 message_id = 1;
   optional int32 player_id = 2;
 }
+
 message ShootOk {
-  optional int32 message_id = 1;
-  optional int32 player_id = 2;
-}
-message GotShotOk {
   optional int32 message_id = 1;
   optional int32 player_id = 2;
 }
@@ -42,12 +41,6 @@ message ShootEvent {
   optional int32 player_id = 8;
 }
 
-message GotShotEvent {
-  optional int32 message_id = 1;
-  optional int32 projectile_id = 2;
-  optional int32 player_id = 8;
-}
-
 message GameState {
   optional int32 message_id = 1;
   repeated PlayerState players = 2;
@@ -61,6 +54,7 @@ message PlayerIsDead {
 
 message PlayerIsDeadOk {
   optional int32 message_id = 1;
+  optional int32 player_id = 2;
 }
 
 message Boost {
@@ -91,4 +85,5 @@ message BoostPickUp {
 
 message BoostPickUpOk {
   optional int32 message_id = 1;
+  optional int32 player_id = 2;
 }
