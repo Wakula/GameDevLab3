@@ -15,9 +15,8 @@ def create_player_state(player):
 
 def create_shoot_event(projectile):
     shoot_event = messages_pb2.ShootEvent()
-    shoot_event.projectile_id = projectile.id
-    shoot_event.x = projectile.bounds.x
-    shoot_event.y = projectile.bounds.y
+    shoot_event.projectile_id = projectile.id[1]
+    shoot_event.x, shoot_event.y = projectile.bounds.center
     shoot_event.damage = projectile.damage
     shoot_event.direction = projectile.owner.direction.value
     shoot_event.speed = projectile.owner.projectile_speed

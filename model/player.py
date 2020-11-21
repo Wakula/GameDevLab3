@@ -31,7 +31,7 @@ class AbstractPlayer(GameObject):
             self,
             settings.PROJECTILE_BASE_DAMAGE
         )
-        self.game.projectiles.append(projectile)
+        self.game.projectiles[projectile.id] = projectile
         self.shot_projectile = projectile
 
     def is_on_recharge(self):

@@ -8,12 +8,12 @@ class AbstractGame:
         pygame.init()
         self.game_over = False
         self.players = []
-        self.projectiles = []
+        self.projectiles = {}
         self.clock = pygame.time.Clock()
 
     @property
     def objects(self):
-        return (*self.players, *self.projectiles)
+        return (*self.players, *self.projectiles.values())
 
     def update_player_position(self, player_id, new_x, new_y, new_dir):
         for player in self.players:
@@ -31,7 +31,7 @@ class AbstractGame:
     def handle_projectile_collisions(self):
         collided_projectiles = []
         dead_players = []
-        for projectile in self.projectiles:
+        for projectile in self.projectiles.values():
             for player in self.players:
                 if player is projectile.owner:
                     continue
@@ -49,7 +49,7 @@ class AbstractGame:
 
     def remove_objects(self, collided_projectiles, dead_players):
         for projectile in collided_projectiles:
-            self.projectiles.remove(projectile)
+            del self.projectiles[projectile.id]
         for player in dead_players:
             self.players.remove(player)
 

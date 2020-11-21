@@ -75,11 +75,13 @@ class Client:
 
             if message.player_id != self.player_id:
                 self.game.update_player_position(message.player_id, message.x, message.y, Directions(message.direction))
+        
         if isinstance(message, messages_pb2.ShootEvent):
-            owner = self.game.get_player(message.player_id)
-            projectile = udp_helper.create_projectile(message, owner)
-            self.game.projectiles.append(projectile)
-            self.udp_communicator.send_until_approval(messages_pb2.ShootOk(), settings.SERVER_HOST, settings.SERVER_PORT)
+            if not (message.player_id, message.projectile_id) in self.game.projectiles.keys():
+                owner = self.game.get_player(message.player_id)
+                projectile = udp_helper.create_projectile(message, owner)
+                self.game.projectiles[projectile.id] = projectile
+                self.udp_communicator.send_until_approval(messages_pb2.ShootOk(), settings.SERVER_HOST, settings.SERVER_PORT)
 
     def read_socket(self):
         address_to_messages = self.udp_communicator.read()

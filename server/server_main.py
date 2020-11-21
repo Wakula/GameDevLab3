@@ -35,7 +35,7 @@ class Server:
             player_id = message.player_id
             owner = self.game.get_player(player_id)
             projectile = udp_helper.create_projectile(message, owner)
-            self.game.projectiles.append(projectile)
+            self.game.projectiles[projectile.id] = projectile
             for client in self.clients:
                 if client.player_id == player_id:
                     self.udp_communicator.send_until_approval(messages_pb2.ShootOk(), client.host, client.port)
