@@ -19,10 +19,45 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0emessages.proto\"0\n\x07\x43onnect\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"!\n\x0bGameStarted\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\"6\n\rGameStartedOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"0\n\x07ShootOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"2\n\tGotShotOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"|\n\x0bPlayerState\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x11\n\tdirection\x18\x05 \x01(\t\x12\r\n\x05speed\x18\x06 \x01(\x05\x12\x0e\n\x06health\x18\x07 \x01(\x05\"\x92\x01\n\nShootEvent\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x15\n\rprojectile_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x0e\n\x06\x64\x61mage\x18\x05 \x01(\x05\x12\x11\n\tdirection\x18\x06 \x01(\t\x12\r\n\x05speed\x18\x07 \x01(\x05\x12\x11\n\tplayer_id\x18\x08 \x01(\x05\"L\n\x0cGotShotEvent\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x15\n\rprojectile_id\x18\x02 \x01(\x05\x12\x11\n\tplayer_id\x18\x08 \x01(\x05\"`\n\tGameState\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x1d\n\x07players\x18\x02 \x03(\x0b\x32\x0c.PlayerState\x12 \n\x0bprojectiles\x18\x03 \x03(\x0b\x32\x0b.ShootEvent\"5\n\x0cPlayerIsDead\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"$\n\x0ePlayerIsDeadOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05'
+  serialized_pb=b'\n\x0emessages.proto\"0\n\x07\x43onnect\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"!\n\x0bGameStarted\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\"6\n\rGameStartedOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"0\n\x07ShootOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"2\n\tGotShotOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"|\n\x0bPlayerState\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x11\n\tdirection\x18\x05 \x01(\t\x12\r\n\x05speed\x18\x06 \x01(\x05\x12\x0e\n\x06health\x18\x07 \x01(\x05\"\x92\x01\n\nShootEvent\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x15\n\rprojectile_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x0e\n\x06\x64\x61mage\x18\x05 \x01(\x05\x12\x11\n\tdirection\x18\x06 \x01(\t\x12\r\n\x05speed\x18\x07 \x01(\x05\x12\x11\n\tplayer_id\x18\x08 \x01(\x05\"L\n\x0cGotShotEvent\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x15\n\rprojectile_id\x18\x02 \x01(\x05\x12\x11\n\tplayer_id\x18\x08 \x01(\x05\"`\n\tGameState\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x1d\n\x07players\x18\x02 \x03(\x0b\x32\x0c.PlayerState\x12 \n\x0bprojectiles\x18\x03 \x03(\x0b\x32\x0b.ShootEvent\"5\n\x0cPlayerIsDead\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x11\n\tplayer_id\x18\x02 \x01(\x05\"$\n\x0ePlayerIsDeadOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\"\xad\x01\n\x05\x42oost\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x10\n\x08\x62oost_id\x18\x02 \x01(\x05\x12\t\n\x01x\x18\x03 \x01(\x05\x12\t\n\x01y\x18\x04 \x01(\x05\x12\x19\n\x04type\x18\x05 \x01(\x0e\x32\x0b.Boost.Type\"M\n\x04Type\x12\n\n\x06HEALTH\x10\x00\x12\x14\n\x10PROJECTILE_SPEED\x10\x01\x12\x10\n\x0cPLAYER_SPEED\x10\x02\x12\x11\n\rPLAYER_DAMAGE\x10\x03\"\x1d\n\x07\x42oostOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\"F\n\x0b\x42oostPickUp\x12\x12\n\nmessage_id\x18\x01 \x01(\x05\x12\x10\n\x08\x62oost_id\x18\x02 \x01(\x05\x12\x11\n\tplayer_id\x18\x03 \x01(\x05\"#\n\rBoostPickUpOk\x12\x12\n\nmessage_id\x18\x01 \x01(\x05'
 )
 
 
+
+_BOOST_TYPE = _descriptor.EnumDescriptor(
+  name='Type',
+  full_name='Boost.Type',
+  filename=None,
+  file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='HEALTH', index=0, number=0,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='PROJECTILE_SPEED', index=1, number=1,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='PLAYER_SPEED', index=2, number=2,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='PLAYER_DAMAGE', index=3, number=3,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=902,
+  serialized_end=979,
+)
+_sym_db.RegisterEnumDescriptor(_BOOST_TYPE)
 
 
 _CONNECT = _descriptor.Descriptor(
@@ -530,8 +565,181 @@ _PLAYERISDEADOK = _descriptor.Descriptor(
   serialized_end=803,
 )
 
+
+_BOOST = _descriptor.Descriptor(
+  name='Boost',
+  full_name='Boost',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='Boost.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='boost_id', full_name='Boost.boost_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='x', full_name='Boost.x', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='y', full_name='Boost.y', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='type', full_name='Boost.type', index=4,
+      number=5, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _BOOST_TYPE,
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=806,
+  serialized_end=979,
+)
+
+
+_BOOSTOK = _descriptor.Descriptor(
+  name='BoostOk',
+  full_name='BoostOk',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='BoostOk.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=981,
+  serialized_end=1010,
+)
+
+
+_BOOSTPICKUP = _descriptor.Descriptor(
+  name='BoostPickUp',
+  full_name='BoostPickUp',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='BoostPickUp.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='boost_id', full_name='BoostPickUp.boost_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='player_id', full_name='BoostPickUp.player_id', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1012,
+  serialized_end=1082,
+)
+
+
+_BOOSTPICKUPOK = _descriptor.Descriptor(
+  name='BoostPickUpOk',
+  full_name='BoostPickUpOk',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message_id', full_name='BoostPickUpOk.message_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1084,
+  serialized_end=1119,
+)
+
 _GAMESTATE.fields_by_name['players'].message_type = _PLAYERSTATE
 _GAMESTATE.fields_by_name['projectiles'].message_type = _SHOOTEVENT
+_BOOST.fields_by_name['type'].enum_type = _BOOST_TYPE
+_BOOST_TYPE.containing_type = _BOOST
 DESCRIPTOR.message_types_by_name['Connect'] = _CONNECT
 DESCRIPTOR.message_types_by_name['GameStarted'] = _GAMESTARTED
 DESCRIPTOR.message_types_by_name['GameStartedOk'] = _GAMESTARTEDOK
@@ -543,6 +751,10 @@ DESCRIPTOR.message_types_by_name['GotShotEvent'] = _GOTSHOTEVENT
 DESCRIPTOR.message_types_by_name['GameState'] = _GAMESTATE
 DESCRIPTOR.message_types_by_name['PlayerIsDead'] = _PLAYERISDEAD
 DESCRIPTOR.message_types_by_name['PlayerIsDeadOk'] = _PLAYERISDEADOK
+DESCRIPTOR.message_types_by_name['Boost'] = _BOOST
+DESCRIPTOR.message_types_by_name['BoostOk'] = _BOOSTOK
+DESCRIPTOR.message_types_by_name['BoostPickUp'] = _BOOSTPICKUP
+DESCRIPTOR.message_types_by_name['BoostPickUpOk'] = _BOOSTPICKUPOK
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Connect = _reflection.GeneratedProtocolMessageType('Connect', (_message.Message,), {
@@ -621,6 +833,34 @@ PlayerIsDeadOk = _reflection.GeneratedProtocolMessageType('PlayerIsDeadOk', (_me
   # @@protoc_insertion_point(class_scope:PlayerIsDeadOk)
   })
 _sym_db.RegisterMessage(PlayerIsDeadOk)
+
+Boost = _reflection.GeneratedProtocolMessageType('Boost', (_message.Message,), {
+  'DESCRIPTOR' : _BOOST,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:Boost)
+  })
+_sym_db.RegisterMessage(Boost)
+
+BoostOk = _reflection.GeneratedProtocolMessageType('BoostOk', (_message.Message,), {
+  'DESCRIPTOR' : _BOOSTOK,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:BoostOk)
+  })
+_sym_db.RegisterMessage(BoostOk)
+
+BoostPickUp = _reflection.GeneratedProtocolMessageType('BoostPickUp', (_message.Message,), {
+  'DESCRIPTOR' : _BOOSTPICKUP,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:BoostPickUp)
+  })
+_sym_db.RegisterMessage(BoostPickUp)
+
+BoostPickUpOk = _reflection.GeneratedProtocolMessageType('BoostPickUpOk', (_message.Message,), {
+  'DESCRIPTOR' : _BOOSTPICKUPOK,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:BoostPickUpOk)
+  })
+_sym_db.RegisterMessage(BoostPickUpOk)
 
 
 # @@protoc_insertion_point(module_scope)
