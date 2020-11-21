@@ -13,6 +13,6 @@ Run client:
 python run_client.py client_id
 ```
 
-Controls: WASD
-Shoot: Space
+Controls: WASD  
+Shoot: Space  
 Boosts: Player speed (GREEN), Projectile speed (BLUE), Health points (RED), Projectile damage (AQUA)
