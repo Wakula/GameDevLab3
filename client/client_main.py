@@ -10,16 +10,19 @@ class Client:
     def __init__(self, player_id):
         self.udp_communicator = UDPCommunicator('127.0.0.1')
         self.player_id = player_id
-        self.game = ClientGame()
 
     def run(self):
-        self.game.show_start_screen()
-        self.game.show_connecting()
-        self.connect_to_server()
-        while not self.game.game_over:
-            self.read_socket()
-            self.send_actions()
-            self.game.run()
+        while True:
+            self.game = ClientGame()
+            self.game.show_start_screen()
+            self.game.show_connecting()
+            self.connect_to_server()
+            while not self.game.is_game_over() and not self.player_id in self.game.dead_players:
+                self.read_socket()
+                self.send_actions()
+                self.game.run()
+            is_client_winner = self.game.player_exists(self.player_id)
+            self.game.show_end_screen(is_client_winner)
 
     def connect_to_server(self):
         connect = messages_pb2.Connect()
