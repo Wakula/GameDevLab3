@@ -49,7 +49,6 @@ class ClientGame(AbstractGame):
         for game_object in self.objects:
             game_object.update()
         self.handle_projectile_collisions()
-        self.try_undo_boosts_effects()
 
     def draw(self):
         for game_object in self.objects:

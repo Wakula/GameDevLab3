@@ -1,10 +1,9 @@
 from model.constants import Directions, DIRECTIONS_TO_DELTA
-from model.game_object import GameObject
-from model.projectile import Projectile
 from model.player import AbstractPlayer
 import random
 import pygame
 import settings
+
 
 class ClientPlayer(AbstractPlayer):
     
@@ -120,6 +119,7 @@ class Opponent(ClientPlayer):
             self.current_key = random.choice(tuple(self.KEYS_TO_DIRECTIONS))
         super().handle_down(self.current_key)
         super().update()
+
 
 class NetworkOpponent(ClientPlayer):
     def __init__(self, x, y, radius, color, offset, game, player_id):

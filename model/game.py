@@ -27,9 +27,12 @@ class AbstractGame:
         player.move(dx, dy)
         player.direction = new_dir
     
-    def update_player_health(self, player_id, new_health):
-        player = self.players[player_id]
-        player.health = new_health
+    def update_player_stats(self, new_player_state):
+        player = self.players[new_player_state.player_id]
+        player.health = new_player_state.health
+        player.offset = new_player_state.speed
+        player.projectile_speed = new_player_state.projectile_speed
+        player.projectile_damage = new_player_state.damage
 
     def handle_projectile_collisions(self):
         collided_projectiles = []
@@ -47,15 +50,6 @@ class AbstractGame:
             del self.projectiles[projectile.id]
         for player in dead_players:
             del self.players[player.player_id]
-
-    def try_undo_boosts_effects(self):
-        undone_boosts = []
-        for boost in self.attached_boosts:
-            boost.try_undo_effect()
-            if boost.is_effect_undone():
-                undone_boosts.append(boost)
-        for boost in undone_boosts:
-            self.attached_boosts.remove(boost)
 
     def on_player_hit(self, projectile, player, dead_players):
         projectile.hit(player)

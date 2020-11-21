@@ -28,6 +28,8 @@ message PlayerState {
   optional string direction = 5;
   optional int32 speed = 6;
   optional int32 health = 7;
+  optional int32 damage = 8;
+  optional int32 projectile_speed = 9;
 }
 
 message ShootEvent {

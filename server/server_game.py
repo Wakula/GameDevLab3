@@ -68,6 +68,15 @@ class ServerGame(AbstractGame):
             del self.boosts_on_field[boost.boost_id]
         self.removed_boosts = removed_boosts_from_field
 
+    def try_undo_boosts_effects(self):
+        undone_boosts = []
+        for boost in self.attached_boosts:
+            boost.try_undo_effect()
+            if boost.is_effect_undone():
+                undone_boosts.append(boost)
+        for boost in undone_boosts:
+            self.attached_boosts.remove(boost)
+
     def update(self):
         for game_object in self.objects:
             game_object.update()

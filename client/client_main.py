@@ -83,7 +83,7 @@ class Client:
 
             if message.player_id != self.player_id:
                 self.game.update_player_position(message.player_id, message.x, message.y, Directions(message.direction))
-            self.game.update_player_health(player_id, message.health)
+            self.game.update_player_stats(message)
 
         elif isinstance(message, messages_pb2.ShootEvent):
             if message.player_id in self.game.dead_players:

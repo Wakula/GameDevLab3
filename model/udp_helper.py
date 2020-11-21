@@ -45,6 +45,9 @@ def create_player_state(player):
     player_state.y = player.bounds.y
     player_state.direction = player.direction.value
     player_state.health = player.health
+    player_state.speed = player.offset
+    player_state.projectile_speed = player.projectile_speed
+    player_state.damage = player.projectile_damage
     return player_state
 
 
