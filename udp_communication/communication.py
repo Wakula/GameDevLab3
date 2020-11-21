@@ -41,6 +41,14 @@ class UDPCommunicator:
         self.last_approval_message_id = None
         self.unfinished_approvals = []
 
+    def clean_sockets(self):
+        try:
+            while self.read_sock.recv(1024): pass
+            while self.write_sock.recv(1024): pass
+        except:
+            pass
+
+
     def is_required_approval_message(self, message, approval_message):
         if type(message) in MESSAGE_TO_ID_APPROVAL:
             return approval_message.message_id > self.last_approval_message_id

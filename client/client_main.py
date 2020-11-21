@@ -11,14 +11,17 @@ class Client:
     def __init__(self, player_id):
         self.udp_communicator = UDPCommunicator('127.0.0.1', is_client=True)
         self.player_id = player_id
+        self.is_alive = True
 
     def run(self):
         while True:
             self.game = ClientGame()
+            self.udp_communicator = UDPCommunicator('127.0.0.1', is_client=True)
+            self.is_alive = True
             self.game.show_start_screen()
             self.game.show_connecting()
             self.connect_to_server()
-            while not self.game.is_game_over() and not self.player_id in self.game.dead_players:
+            while not self.game.is_game_over() and self.is_alive:
                 self.read_socket()
                 self.send_actions()
                 self.game.run()
@@ -43,7 +46,7 @@ class Client:
                 self.init_game(game_state)
 
     def send_actions(self):
-        if self.player_id in self.game.dead_players:
+        if self.player_id in self.game.dead_players or self.player_id not in self.game.players:
             #TODO: return to main menu
             return
         player = self.game.players[self.player_id]
@@ -98,8 +101,12 @@ class Client:
             if message.player_id not in self.game.dead_players:
                 self.game.dead_players[message.player_id] = self.game.players[message.player_id]
                 del self.game.players[message.player_id]
+            if message.player_id == self.player_id:
+                self.is_alive = False
+            player_is_dead_ok = messages_pb2.PlayerIsDeadOk()
+            player_is_dead_ok.player_id = self.player_id
             self.udp_communicator.send_until_approval(
-                messages_pb2.PlayerIsDeadOk(), settings.SERVER_HOST, settings.SERVER_PORT
+                player_is_dead_ok, settings.SERVER_HOST, settings.SERVER_PORT
             )
 
         elif isinstance(message, messages_pb2.Boost):
