@@ -86,6 +86,14 @@ class ClientGame(AbstractGame):
         pygame.display.update()
         while not self.handle_start():
             pass
+
+    def show_end_screen(self, is_client_winner):
+        self.clean_screen()
+        text = settings.WINNER_TEXT if is_client_winner else settings.GAME_OVER_TEXT
+        self.render_text(text)
+        pygame.display.update()
+        while not self.handle_start():
+            pass
     
     def show_connecting(self):
         self.clean_screen()

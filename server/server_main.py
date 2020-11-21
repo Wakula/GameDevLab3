@@ -9,6 +9,8 @@ from udp_communication.messages import messages_pb2
 class Server:
     def __init__(self):
         self.udp_communicator = UDPCommunicator(settings.SERVER_HOST, settings.SERVER_PORT)
+
+    def init_server(self):
         self.game = ServerGame()
         self.clients = []
         self.dead_client_ids = {}
@@ -60,17 +62,20 @@ class Server:
             self.udp_communicator.send(game_state, client.host, client.port)
 
     def run(self):
-        self.create_room()
         while True:
-            address_to_messages = self.udp_communicator.read()
-            if address_to_messages:
-                for address, messages in address_to_messages.items():
-                    host, port = address
-                    for message in messages:
-                        self.handle_client_message(message, host, port)
+            self.init_server()
+            self.create_room()
+            while not self.game.is_game_over():
+                address_to_messages = self.udp_communicator.read()
+                if address_to_messages:
+                    for address, messages in address_to_messages.items():
+                        host, port = address
+                        for message in messages:
+                            self.handle_client_message(message, host, port)
 
+                self.send_player_states()
+                self.game.run()
             self.send_player_states()
-            self.game.run()
 
     def send_player_states(self):
         for dead_player_id in self.game.dead_players:

@@ -53,4 +53,6 @@ FONT = 'Comic Sans MS'
 FONT_SIZE = 30
 FONT_COLOR = (255, 255, 255)
 START_SCREEN_TEXT = 'Press [Space] to start new game'
+GAME_OVER_TEXT = 'Game Over!'
+WINNER_TEXT = "You've won!"
 CONNECTING_TEXT = 'Connecting...'

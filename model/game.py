@@ -6,7 +6,6 @@ import settings
 class AbstractGame:
     def __init__(self):
         pygame.init()
-        self.game_over = False
         self.players = {}
         self.projectiles = {}
         self.boosts_on_field = []
@@ -17,6 +16,9 @@ class AbstractGame:
     @property
     def objects(self):
         return (*self.players.values(), *self.projectiles.values(), *self.boosts_on_field)
+
+    def is_game_over(self):
+        return len(self.players.values()) < 2 and len(self.dead_players) > 0
 
     def update_player_position(self, player_id, new_x, new_y, new_dir):
         player = self.players[player_id]
